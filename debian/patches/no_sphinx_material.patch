@@ -1,0 +1,39 @@
+Description: Don't try to use a theme we don't have
+
+Upstream switched to sphinx_material in
+1d7aafad5c3ad634c9ae2122881c1809c2ccbcbe
+and later to sphinx_immaterial; Debian doesn't have those themes.
+
+(I haven't investigated packaging it, which might be a better long-term option.)
+
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Forwarded: not-needed
+
+--- a/docs/source/conf.py
++++ b/docs/source/conf.py
+@@ -56,7 +56,6 @@ extensions = ['sphinx.ext.autodoc',
+               'matplotlib.sphinxext.plot_directive',
+               'IPython.sphinxext.ipython_console_highlighting',
+               'IPython.sphinxext.ipython_directive',
+-              "sphinx_immaterial",
+               ]
+ 
+ try:
+@@ -163,7 +162,7 @@ pygments_style = 'default'
+ # The theme to use for HTML and HTML Help pages.  See the documentation for
+ # a list of builtin themes.
+ 
+-html_theme = 'sphinx_immaterial'
++html_theme = 'nature'
+ html_title = project
+ html_short_title = project
+ html_extra_path = ['version_info/versions-v3.json']
+@@ -249,7 +248,7 @@ html_static_path = ['_static']
+ 
+ # Custom sidebar templates, maps document names to template names.
+ html_sidebars = {
+-    "**": ["logo-text.html", "globaltoc.html", "localtoc.html", "searchbox.html"]
++    "**": ["globaltoc.html", "localtoc.html", "searchbox.html"]
+ }
+ 
+ # Additional templates that should be rendered to pages, maps page names to

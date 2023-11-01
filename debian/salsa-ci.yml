@@ -1,0 +1,12 @@
+---
+include:
+  - https://salsa.debian.org/salsa-ci-team/pipeline/raw/master/salsa-ci.yml
+  - https://salsa.debian.org/salsa-ci-team/pipeline/raw/master/pipeline-jobs.yml
+variables:
+  SALSA_CI_LINTIAN_FAIL_WARNING: 1
+# clearer errors from reproducibility test
+  SALSA_CI_REPROTEST_ENABLE_DIFFOSCOPE: 1
+# known not currently reproducible
+  SALSA_CI_DISABLE_REPROTEST: 1
+# long and mostly duplicates the build-time test
+  SALSA_CI_DISABLE_AUTOPKGTEST: 1

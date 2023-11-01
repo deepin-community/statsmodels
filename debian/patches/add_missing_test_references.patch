@@ -1,0 +1,11 @@
+Description: Copy another test reference directory into the build
+
+The build-time tests fail if they can't find this
+
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Forwarded: not-needed - done in #8870
+
+--- /dev/null
++++ b/statsmodels/tsa/stl/tests/results/__init__.py
+@@ -0,0 +1 @@
++# do nothing - dpkg-source --commit can't handle empty files

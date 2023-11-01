@@ -1,0 +1,99 @@
+Description: Allow tests to fail if multiprocessing is not available
+
+This is currently the case on hurd-i386
+
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Forwarded: no
+
+--- a/statsmodels/graphics/tests/test_functional.py
++++ b/statsmodels/graphics/tests/test_functional.py
+@@ -15,6 +15,12 @@ try:
+     import matplotlib.pyplot as plt
+ except ImportError:
+     pass
++has_multiprocessing = True
++try:
++    import multiprocessing
++    multiprocessing.Pool()
++except ImportError:
++    has_multiprocessing = False
+ 
+ 
+ data = elnino.load()
+@@ -27,6 +33,10 @@ data = data.raw_data[:, 1:]
+ def test_hdr_basic(close_figures):
+     try:
+         _, hdr = hdrboxplot(data, labels=labels, seed=12345)
++    except ImportError:
++        if not has_multiprocessing:
++            pytest.xfail('Multiprocess not available')
++        raise
+     except WindowsError:
+         pytest.xfail('Multiprocess randomly crashes in Windows testing')
+ 
+@@ -69,6 +79,10 @@ def test_hdr_basic(close_figures):
+ def test_hdr_basic_brute(close_figures, reset_randomstate):
+     try:
+         _, hdr = hdrboxplot(data, ncomp=2, labels=labels, use_brute=True)
++    except ImportError:
++        if not has_multiprocessing:
++            pytest.xfail('Multiprocess not available')
++        raise
+     except WindowsError:
+         pytest.xfail('Multiprocess randomly crashes in Windows testing')
+ 
+@@ -104,6 +118,10 @@ def test_hdr_plot(close_figures):
+ def test_hdr_alpha(close_figures):
+     try:
+         _, hdr = hdrboxplot(data, alpha=[0.7], seed=12345)
++    except ImportError:
++        if not has_multiprocessing:
++            pytest.xfail('Multiprocess not available')
++        raise
+     except WindowsError:
+         pytest.xfail('Multiprocess randomly crashes in Windows testing')
+ 
+@@ -119,6 +137,10 @@ def test_hdr_alpha(close_figures):
+ def test_hdr_multiple_alpha(close_figures):
+     try:
+         _, hdr = hdrboxplot(data, alpha=[0.4, 0.92], seed=12345)
++    except ImportError:
++        if not has_multiprocessing:
++            pytest.xfail('Multiprocess not available')
++        raise
+     except WindowsError:
+         pytest.xfail('Multiprocess randomly crashes in Windows testing')
+ 
+@@ -144,6 +166,10 @@ def test_hdr_threshold(close_figures):
+     try:
+         _, hdr = hdrboxplot(data, alpha=[0.8], threshold=0.93,
+                             seed=12345)
++    except ImportError:
++        if not has_multiprocessing:
++            pytest.xfail('Multiprocess not available')
++        raise
+     except WindowsError:
+         pytest.xfail('Multiprocess randomly crashes in Windows testing')
+ 
+@@ -157,6 +183,10 @@ def test_hdr_threshold(close_figures):
+ def test_hdr_bw(close_figures):
+     try:
+         _, hdr = hdrboxplot(data, bw='cv_ml', seed=12345)
++    except ImportError:
++        if not has_multiprocessing:
++            pytest.xfail('Multiprocess not available')
++        raise
+     except WindowsError:
+         pytest.xfail('Multiprocess randomly crashes in Windows testing')
+ 
+@@ -170,6 +200,10 @@ def test_hdr_bw(close_figures):
+ def test_hdr_ncomp(close_figures):
+     try:
+         _, hdr = hdrboxplot(data, ncomp=3, seed=12345)
++    except ImportError:
++        if not has_multiprocessing:
++            pytest.xfail('Multiprocess not available')
++        raise
+     except WindowsError:
+         pytest.xfail('Multiprocess randomly crashes in Windows testing')
+ 

@@ -1,0 +1,24 @@
+Description: Allow a memory-heavy test to run out of memory
+
+Failed in 0.14.0 on armel,armhf,mipsel (but not i386)
+
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Forwarded: no
+
+--- a/statsmodels/tsa/statespace/tests/test_dynamic_factor_mq_frbny_nowcast.py
++++ b/statsmodels/tsa/statespace/tests/test_dynamic_factor_mq_frbny_nowcast.py
+@@ -1,4 +1,5 @@
+ import os
++import sys
+ import numpy as np
+ import pandas as pd
+ from scipy.io import matlab
+@@ -400,7 +401,7 @@ def test_emstep_methods_nonmissing(matla
+ 
+ 
+ @pytest.mark.parametrize("run", ['news_112', 'news_222', 'news_block_112',
+-                                 'news_block_222'])
++                                 pytest.param('news_block_222',marks=pytest.mark.xfail(condition=sys.maxsize<2**33,reason="too memory-heavy for armel,armhf,mipsel",raises=MemoryError,strict=False))])
+ def test_news(matlab_results, run):
+     endog_M, endog_Q = matlab_results[:2]
+     results = matlab_results[2][run]

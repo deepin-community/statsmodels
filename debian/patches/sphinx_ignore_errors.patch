@@ -1,0 +1,35 @@
+Description: Don't fail documentation build on examples exceptions
+
+If example code outputs an error when run,
+ipython (ipython:: blocks) now fails the whole build by default,
+and tools/nbgenerate.py (.ipynb files) now leaves out that file
+(leaving a broken link in the examples index).
+
+As some examples use downloaded data and are hence expected to be
+unrunnable on a Debian buildd, this instead keeps them
+(::ipython with error output, .ipynb without output).
+
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Forwarded: not-needed
+
+--- a/docs/source/conf.py
++++ b/docs/source/conf.py
+@@ -67,6 +67,7 @@ else:
+ 
+ # nbsphinx options
+ nbsphinx_allow_errors = True
++ipython_warning_is_error = False
+ # sphinxcontrib-spelling options
+ spelling_word_list_filename = ['spelling_wordlist.txt', 'names_wordlist.txt']
+ spelling_ignore_pypi_package_names = True
+--- a/docs/Makefile
++++ b/docs/Makefile
+@@ -34,6 +34,8 @@ html:
+ 	mkdir -p $(BUILDDIR)/source/examples/notebooks/generated
+ 	# Black list notebooks from doc build here
+ 	$(TOOLSPATH)$(NOTEBOOKBUILD) --parallel --report-errors --skip-existing --execute-only --execution-blacklist statespace_custom_models
++	@echo "Copying notebooks that failed execution (there are usually several in Debian because some need network and/or dependencies we don't have)"
++	cp -nav ../examples/notebooks/*.ipynb -t source/examples/notebooks/generated
+ 	@echo "Running sphinx-build"
+ 	@echo @$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) $(O)
+ 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(PAPEROPT_$(PAPER)) $(SPHINXOPTS) $(O)

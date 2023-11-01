@@ -1,15 +1,129 @@
-Source: template-repository
-Section: unknown
+Source: statsmodels
+Maintainer: Debian Science Maintainers <debian-science-maintainers@lists.alioth.debian.org>
+Uploaders: Yaroslav Halchenko <debian@onerussian.com>,
+           Michael Hanke <michael.hanke@gmail.com>,
+           Diane Trout <diane@ghic.org>,
+           Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Section: python
 Priority: optional
-Maintainer: Tsic404 <liuheng@deepin.org>
-Build-Depends: debhelper (>= 11)
-Standards-Version: 4.1.3
-Homepage: https://github.com/deepin-community/template-repository
-#Vcs-Browser: https://salsa.debian.org/debian/deepin-community-template-repository
-#Vcs-Git: https://salsa.debian.org/debian/deepin-community-template-repository.git
+Build-Depends: debhelper-compat (= 13),
+               sphinx-common,
+               dh-python (>= 3.20180313~),
+               cython3 (>= 0.29.32~),
+# tries to build twice (arch/indep), which fails               pybuild-plugin-pyproject,
+               python3-all-dev,
+               python3-colorama <!nocheck> <!nodoc>,
+               python3-cvxopt <!nocheck> <!nodoc>,
+               python3-dateutil <!nocheck> <!nodoc>,
+               python3-jinja2 <!nocheck> <!nodoc>,
+               python3-joblib <!nocheck> <!nodoc>,
+               python3-matplotlib,
+               python3-numpy,
+               python3-pandas,
+               python3-patsy (>= 0.5.1) <!nocheck> <!nodoc>,
+               python3-pytest <!nocheck>,
+               python3-pytest-forked <!nocheck>,
+               python3-scipy,
+               python3-setuptools,
+               python3-setuptools-scm (>= 7~),
+               python3-tk <!nocheck> <!nodoc>
+Build-Depends-Indep: python3-jupyter-client <!nodoc>,
+                     python3-nbconvert <!nodoc>,
+                     python3-nbsphinx <!nodoc>,
+                     python3-notebook <!nodoc>,
+                     python3-numpydoc <!nodoc>,
+                     python3-seaborn <!nodoc>,
+                     python3-simplegeneric <!nodoc>,
+                     python3-sphinx <!nodoc>,
+                     python3-yaml <!nodoc>,
+                     jdupes <!nodoc>,
+# for intersphinx inventories
+# no longer exists                     python-matplotlib-doc <!nodoc>,
+# no longer exists                     python-numpy-doc <!nodoc>,
+                     python-scipy-doc <!nodoc>,
+                     python-pandas-doc <!nodoc>,
+                     python3-doc <!nodoc>,
+# for the comparing-with-R examples, and example datasets
+                     r-base-core <!nodoc>,
+                     python3-rpy2 <!nodoc>,
+                     r-cran-cardata <!nodoc>,
+                     r-cran-geepack <!nodoc>,
+                     r-cran-guerry <!nodoc>,
+                     r-cran-lme4 <!nodoc>,
+                     r-cran-mass <!nodoc>,
+                     r-cran-robustbase <!nodoc>,
+                     r-cran-vcd <!nodoc>,
+                     pandoc <!nodoc>
+Standards-Version: 4.6.2
+Rules-Requires-Root: no
+Vcs-Browser: https://salsa.debian.org/science-team/statsmodels
+Vcs-Git: https://salsa.debian.org/science-team/statsmodels.git
+Homepage: https://www.statsmodels.org
 
-Package: template-repository
+Package: python-statsmodels-doc
+Architecture: all
+Section: doc
+Depends: ${misc:Depends},
+         ${sphinxdoc:Depends},
+         libjs-requirejs,
+         libjs-mathjax
+Suggests: python3-statsmodels,
+          python3-doc,
+          python-numpy-doc,
+          python-patsy-doc,
+          python-pandas-doc,
+          python-scipy-doc
+Breaks: python-scikits-statsmodels-doc,
+        python-scikits.statsmodels-doc,
+        python-statsmodels (<< 0.9.0-3~)
+Replaces: python-scikits-statsmodels-doc,
+          python-scikits.statsmodels-doc,
+          python-statsmodels (<< 0.9.0-3~)
+Description: documentation and examples for statsmodels
+ Statsmodels Python modules are providing classes and functions for
+ the estimation of several categories of statistical models. These
+ currently include linear regression models, OLS, GLS, WLS and GLS
+ with AR(p) errors, generalized linear models for several distribution
+ families and M-estimators for robust linear models. An extensive list
+ of result statistics are available for each estimation problem.
+ .
+ This package contains HTML documentation and example scripts for
+ python-statsmodels.
+
+Package: python3-statsmodels
+Architecture: all
+Depends: ${misc:Depends},
+         ${python3:Depends},
+         python3-numpy,
+# upstream say >1.2 but the amd64 autopkgtest failure happens with 1.4 not 1.5
+# maybe the real problem is what scipy was built with
+         python3-scipy (>= 1.5~),
+         python3-statsmodels-lib (>= ${source:Version}),
+         python3-patsy (>= 0.5.1),
+         python3-pandas
+Recommends: python3-matplotlib,
+            python3-joblib,
+            python3-colorama,
+            python3-cvxopt
+Suggests: python-statsmodels-doc
+Provides: ${python3:Provides}
+Description: Python3 module for the estimation of statistical models
+ statsmodels Python3 module provides classes and functions for the
+ estimation of several categories of statistical models. These
+ currently include linear regression models, OLS, GLS, WLS and GLS
+ with AR(p) errors, generalized linear models for several distribution
+ families and M-estimators for robust linear models. An extensive list
+ of result statistics are available for each estimation problem.
+
+Package: python3-statsmodels-lib
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: <insert up to 60 chars description>
- <insert long description, indented with spaces>
+Multi-Arch: same
+Depends: ${misc:Depends},
+         ${python3:Depends},
+         ${shlibs:Depends},
+         python3-numpy
+Description: Python3 low-level implementations and bindings for statsmodels
+ Statsmodels is a Python module for the estimation of statistical models.
+ .
+ This package contains internal libraries for python3-statsmodels.  Users
+ should not need to install it directly.

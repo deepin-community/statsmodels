@@ -1,0 +1,115 @@
+Description: Use example data from an R package we have
+
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Forwarded: not-needed
+
+--- a/examples/notebooks/generic_mle.ipynb
++++ b/examples/notebooks/generic_mle.ipynb
+@@ -311,10 +311,10 @@
+     "\n",
+     "### Usage Example\n",
+     "\n",
+-    "The [Medpar](https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/doc/COUNT/medpar.html)\n",
++    "The [epilepsy](https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/doc/robustbase/epilepsy.html)\n",
+     "dataset is hosted in CSV format at the [Rdatasets repository](https://raw.githubusercontent.com/vincentarelbundock/Rdatasets). We use the ``read_csv``\n",
+     "function from the [Pandas library](https://pandas.pydata.org) to load the data\n",
+-    "in memory. We then print the first few columns: \n"
++    "in memory. We then print the first few entries: \n"
+    ]
+   },
+   {
+@@ -340,9 +340,9 @@
+    },
+    "outputs": [],
+    "source": [
+-    "medpar = sm.datasets.get_rdataset(\"medpar\", \"COUNT\", cache=True).data\n",
++    "epilepsy = sm.datasets.get_rdataset(\"epilepsy\", \"robustbase\", cache=True).data\n",
+     "\n",
+-    "medpar.head()"
++    "epilepsy.head()"
+    ]
+   },
+   {
+@@ -350,8 +350,8 @@
+    "metadata": {},
+    "source": [
+     "The model we are interested in has a vector of non-negative integers as\n",
+-    "dependent variable (``los``), and 5 regressors: ``Intercept``, ``type2``,\n",
+-    "``type3``, ``hmo``, ``white``.\n",
++    "dependent variable (``Ysum``), and 3 regressors: ``Intercept``, ``Base``,\n",
++    "``Trt``.\n",
+     "\n",
+     "For estimation, we need to create two variables to hold our regressors and the outcome variable. These can be ndarrays or pandas objects."
+    ]
+@@ -366,8 +366,9 @@
+    },
+    "outputs": [],
+    "source": [
+-    "y = medpar.los\n",
+-    "X = medpar[[\"type2\", \"type3\", \"hmo\", \"white\"]].copy()\n",
++    "y = epilepsy.Ysum\n",
++    "epilepsy[\"Trtnum\"]=epilepsy[\"Trt\"].map({\"placebo\": 0, \"progabide\": 1})\n",
++    "X = epilepsy[[\"Base\", \"Trtnum\"]].copy()\n",
+     "X[\"constant\"] = 1"
+    ]
+   },
+@@ -495,25 +496,42 @@
+    "cell_type": "markdown",
+    "metadata": {},
+    "source": [
+-    "Or we could compare them to results obtained using the MASS implementation for R:\n",
+-    "\n",
+-    "    url = 'https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/csv/COUNT/medpar.csv'\n",
+-    "    medpar = read.csv(url)\n",
+-    "    f = los~factor(type)+hmo+white\n",
+-    "    \n",
+-    "    library(MASS)\n",
+-    "    mod = glm.nb(f, medpar)\n",
+-    "    coef(summary(mod))\n",
+-    "                     Estimate Std. Error   z value      Pr(>|z|)\n",
+-    "    (Intercept)    2.31027893 0.06744676 34.253370 3.885556e-257\n",
+-    "    factor(type)2  0.22124898 0.05045746  4.384861  1.160597e-05\n",
+-    "    factor(type)3  0.70615882 0.07599849  9.291748  1.517751e-20\n",
+-    "    hmo           -0.06795522 0.05321375 -1.277024  2.015939e-01\n",
+-    "    white         -0.12906544 0.06836272 -1.887951  5.903257e-02\n",
+-    "\n",
++    "Or we could compare them to results obtained using the MASS implementation for R:\n"
++   ]
++  },
++  {
++   "cell_type": "code",
++   "execution_count": null,
++   "metadata": {
++    "collapsed": false
++   },
++   "outputs": [],
++   "source": [
++    "%load_ext rpy2.ipython"
++   ]
++  },
++  {
++   "cell_type": "code",
++   "execution_count": null,
++   "metadata": {
++    "collapsed": false
++   },
++   "outputs": [],
++   "source": [
++    "%R f = Ysum~factor(Trt)+Base\n",
++    "%R data(epilepsy,package='robustbase')\n",
++    "%R library(MASS)\n",
++    "%R mod = glm.nb(f, epilepsy)\n",
++    "%R print(coef(summary(mod)))\n"
++   ]
++  },
++  {
++   "cell_type": "markdown",
++   "metadata": {},
++   "source": [
+     "### Numerical precision \n",
+     "\n",
+-    "The ``statsmodels`` generic MLE and ``R`` parameter estimates agree up to the fourth decimal. The standard errors, however, agree only up to the second decimal. This discrepancy is the result of imprecision in our Hessian numerical estimates. In the current context, the difference between ``MASS`` and ``statsmodels`` standard error estimates is substantively irrelevant, but it highlights the fact that users who need very precise estimates may not always want to rely on default settings when using numerical derivatives. In such cases, it is better to use analytical derivatives with the ``LikelihoodModel`` class."
++    "The ``statsmodels`` generic MLE and ``R`` parameter estimates agree up to the fourth decimal. The standard errors, however, agree only up to the first decimal. This discrepancy is the result of imprecision in our Hessian numerical estimates. In the current context, the difference between ``MASS`` and ``statsmodels`` standard error estimates is substantively irrelevant, but it highlights the fact that users who need very precise estimates may not always want to rely on default settings when using numerical derivatives. In such cases, it is better to use analytical derivatives with the ``LikelihoodModel`` class."
+    ]
+   }
+  ],

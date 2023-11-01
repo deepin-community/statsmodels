@@ -1,0 +1,29 @@
+Description: Don't require a warning armel numpy doesn't have
+
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Forwarded: no (this version requires dpkg)
+
+--- a/statsmodels/stats/tests/test_rates_poisson.py
++++ b/statsmodels/stats/tests/test_rates_poisson.py
+@@ -6,6 +6,12 @@ import numpy as np
+ from numpy import arange
+ from numpy.testing import assert_allclose, assert_equal
+ from scipy import stats
++# armel numpy currently doesn't have the divide-by-0 warning (see 0.14.0-1 build log and https://bugs.debian.org/956882)
++# using nullcontext() instead of warn=None to not start failing if this ever gets fixed
++import subprocess
++import contextlib
++debian_arch = subprocess.run(["dpkg","--print-architecture"],capture_output=True,encoding='utf-8').stdout.strip()
++
+ 
+ # we cannot import test_poisson_2indep directly, pytest treats that as test
+ import statsmodels.stats.rates as smr
+@@ -718,7 +724,7 @@ class TestMethodsCompare2indep():
+         assert_allclose(tst2.pvalue, tst.pvalue, rtol=rtol)
+ 
+         # check corner case count2 = 0, see issue #8313
+-        with pytest.warns(RuntimeWarning):
++        with (contextlib.nullcontext() if debian_arch=='armel' else pytest.warns(RuntimeWarning)):
+             tst = smr.test_poisson_2indep(count1, n1, 0, n2, method=meth,
+                                           compare=compare,
+                                           value=None, alternative='two-sided')

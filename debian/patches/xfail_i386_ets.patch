@@ -1,0 +1,51 @@
+Description: test_seasonal_order fails on i386
+
+Warn on use and xfail
+
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Forwarded: no
+
+--- a/statsmodels/tsa/exponential_smoothing/ets.py
++++ b/statsmodels/tsa/exponential_smoothing/ets.py
+@@ -171,6 +171,13 @@ from statsmodels.tsa.exponential_smoothi
+ )
+ from statsmodels.tsa.tsatools import freq_to_period
+ 
++import warnings
++import sys
++import platform
++import re
++warn_ets = "ETSModel can give wrong results on 32 bit i386" if (bool(re.match('i.?86|x86',platform.uname()[4])) and sys.maxsize<2**33) else False
++
++
+ # Implementation details:
+ 
+ # * The smoothing equations are implemented only for models having all
+@@ -426,6 +433,8 @@ class ETSModel(base.StateSpaceMLEModel):
+         missing="none",
+     ):
+ 
++        if warn_ets:
++            warnings.warn(warn_ets)
+         super().__init__(
+             endog, exog=None, dates=dates, freq=freq, missing=missing
+         )
+--- a/statsmodels/tsa/tests/test_exponential_smoothing.py
++++ b/statsmodels/tsa/tests/test_exponential_smoothing.py
+@@ -13,7 +13,7 @@ import pandas as pd
+ import pytest
+ import scipy.stats
+ 
+-from statsmodels.tsa.exponential_smoothing.ets import ETSModel
++from statsmodels.tsa.exponential_smoothing.ets import ETSModel,warn_ets
+ import statsmodels.tsa.holtwinters as holtwinters
+ import statsmodels.tsa.statespace.exponential_smoothing as statespace
+ 
+@@ -1052,6 +1052,7 @@ def test_estimated_initialization_short_
+ 
+ 
+ @pytest.mark.parametrize("method", ["estimated", "heuristic"])
++@pytest.mark.xfail(condition=bool(warn_ets),reason='known to fail on i386',strict=False)
+ def test_seasonal_order(reset_randomstate, method):
+     seasonal = np.arange(12.0)
+     time_series = np.array(list(seasonal) * 100)

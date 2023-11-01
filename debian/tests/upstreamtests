@@ -1,0 +1,14 @@
+#!/bin/sh
+set -e
+pys=`py3versions -s 2>/dev/null`
+# don't import the source tree
+cd "${AUTOPKGTEST_TMP}"
+# avoid timeout on slow architectures
+pytest_options=--skip-slow
+if [ `dpkg --print-architecture` = amd64 ] ; then
+    pytest_options= ;
+fi
+
+for py in $pys ; do
+    $py -m pytest -v $pytest_options /usr/lib/python3/dist-packages/statsmodels ;
+done

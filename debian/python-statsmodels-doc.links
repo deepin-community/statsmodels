@@ -1,0 +1,4 @@
+usr/share/doc/python-statsmodels-doc/examples usr/share/doc/python3-statsmodels/examples
+usr/share/doc/python-statsmodels-doc/html usr/share/doc/python3-statsmodels/html
+usr/share/javascript/mathjax/MathJax.js usr/share/doc/python-statsmodels-doc/html/_static/MathJax.js
+usr/share/javascript/requirejs/require.min.js usr/share/doc/python-statsmodels-doc/html/_static/require.min.js

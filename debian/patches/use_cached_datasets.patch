@@ -1,0 +1,200 @@
+Description: Use cached datasets in tests and examples
+
+Also remove a download that isn't actually used in that example.
+
+This allows the tests to pass, and at least some of the examples to
+be built, in an offline environment such as a Debian buildd.
+
+The cached data is extracted from R packages by debian/datasets/*.
+
+Author: Diane Trout <diane@ghic.org>, Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Forwarded: not-needed
+
+--- a/docs/source/contingency_tables.rst
++++ b/docs/source/contingency_tables.rst
+@@ -49,7 +49,7 @@ contingency table cell counts:
+     import pandas as pd
+     import statsmodels.api as sm
+ 
+-    df = sm.datasets.get_rdataset("Arthritis", "vcd").data
++    df = sm.datasets.get_rdataset("Arthritis", "vcd", cache=True).data
+     df.fillna({"Improved":"None"}, inplace=True)
+ 
+     tab = pd.crosstab(df['Treatment'], df['Improved'])
+@@ -185,7 +185,7 @@ contingency table.
+ 
+ .. ipython:: python
+ 
+-    df = sm.datasets.get_rdataset("VisualAcuity", "vcd").data
++    df = sm.datasets.get_rdataset("VisualAcuity", "vcd", cache=True).data
+     df = df.loc[df.gender == "female", :]
+     tab = df.set_index(['left', 'right'])
+     del tab["gender"]
+--- a/docs/source/duration.rst
++++ b/docs/source/duration.rst
+@@ -42,7 +42,7 @@ We fit the survival distribution only fo
+ 
+    import statsmodels.api as sm
+ 
+-   data = sm.datasets.get_rdataset("flchain", "survival").data
++   data = sm.datasets.get_rdataset("flchain", "survival", cache=True).data
+    df = data.loc[data.sex == "F", :]
+    sf = sm.SurvfuncRight(df["futime"], df["death"])
+ 
+@@ -169,7 +169,7 @@ depending on the value of the covariates
+    import statsmodels.api as sm
+    import statsmodels.formula.api as smf
+ 
+-   data = sm.datasets.get_rdataset("flchain", "survival").data
++   data = sm.datasets.get_rdataset("flchain", "survival", cache=True).data
+    del data["chapter"]
+    data = data.dropna()
+    data["lam"] = data["lambda"]
+--- a/docs/source/example_formulas.rst
++++ b/docs/source/example_formulas.rst
+@@ -47,7 +47,7 @@ and list-wise delete to remove missing o
+ 
+ .. ipython:: python
+ 
+-    df = sm.datasets.get_rdataset("Guerry", "HistData").data
++    df = sm.datasets.get_rdataset("Guerry", "HistData", cache=True).data
+     df = df[['Lottery', 'Literacy', 'Wealth', 'Region']].dropna()
+     df.head()
+ 
+--- a/docs/source/gee.rst
++++ b/docs/source/gee.rst
+@@ -24,7 +24,7 @@ within clusters using data on epilepsy s
+     import statsmodels.api as sm
+     import statsmodels.formula.api as smf
+ 
+-    data = sm.datasets.get_rdataset('epil', package='MASS').data
++    data = sm.datasets.get_rdataset('epil', package='MASS', cache=True).data
+ 
+     fam = sm.families.Poisson()
+     ind = sm.cov_struct.Exchangeable()
+--- a/docs/source/gettingstarted.rst
++++ b/docs/source/gettingstarted.rst
+@@ -50,7 +50,7 @@ We could download the file locally and t
+ 
+ .. ipython:: python
+ 
+-    df = sm.datasets.get_rdataset("Guerry", "HistData").data
++    df = sm.datasets.get_rdataset("Guerry", "HistData", cache=True).data
+ 
+ The `Input/Output doc page <iolib.html>`_ shows how to import from various
+ other formats.
+--- a/docs/source/index.rst
++++ b/docs/source/index.rst
+@@ -25,7 +25,7 @@ Here is a simple example using ordinary
+     import statsmodels.formula.api as smf
+ 
+     # Load data
+-    dat = sm.datasets.get_rdataset("Guerry", "HistData").data
++    dat = sm.datasets.get_rdataset("Guerry", "HistData", cache=True).data
+ 
+     # Fit regression model (using the natural log of one of the regressors)
+     results = smf.ols('Lottery ~ Literacy + np.log(Pop1831)', data=dat).fit()
+--- a/docs/source/mixed_linear.rst
++++ b/docs/source/mixed_linear.rst
+@@ -83,7 +83,7 @@ Examples
+   import statsmodels.api as sm
+   import statsmodels.formula.api as smf
+ 
+-  data = sm.datasets.get_rdataset("dietox", "geepack").data
++  data = sm.datasets.get_rdataset("dietox", "geepack", cache=True).data
+ 
+   md = smf.mixedlm("Weight ~ Time", data, groups=data["Pig"])
+   mdf = md.fit()
+--- a/docs/source/release/version0.6.rst
++++ b/docs/source/release/version0.6.rst
+@@ -41,7 +41,7 @@ covariates.
+    import statsmodels.api as sm
+    import statsmodels.formula.api as smf
+ 
+-   data = sm.datasets.get_rdataset("epil", "MASS").data
++   data = sm.datasets.get_rdataset("epil", "MASS", cache=True).data
+ 
+    md = smf.gee("y ~ age + trt + base", "subject", data,
+                 cov_struct=sm.cov_struct.Independence(), 
+--- a/docs/source/datasets/index.rst
++++ b/docs/source/datasets/index.rst
+@@ -30,7 +30,7 @@ The `Rdatasets project <https://vincenta
+ .. ipython:: python
+ 
+    import statsmodels.api as sm
+-   duncan_prestige = sm.datasets.get_rdataset("Duncan", "carData")
++   duncan_prestige = sm.datasets.get_rdataset("Duncan", "carData", cache=True)
+    print(duncan_prestige.__doc__)
+    duncan_prestige.data.head(5)
+ 
+--- a/examples/notebooks/markov_regression.ipynb
++++ b/examples/notebooks/markov_regression.ipynb
+@@ -30,14 +30,7 @@
+     "import pandas as pd\n",
+     "import statsmodels.api as sm\n",
+     "import matplotlib.pyplot as plt\n",
+-    "\n",
+-    "# NBER recessions\n",
+-    "from pandas_datareader.data import DataReader\n",
+-    "from datetime import datetime\n",
+-    "\n",
+-    "usrec = DataReader(\n",
+-    "    \"USREC\", \"fred\", start=datetime(1947, 1, 1), end=datetime(2013, 4, 1)\n",
+-    ")"
++    "from datetime import datetime\n"
+    ]
+   },
+   {
+--- a/examples/notebooks/mixed_lm_example.ipynb
++++ b/examples/notebooks/mixed_lm_example.ipynb
+@@ -86,7 +86,7 @@
+    "metadata": {},
+    "outputs": [],
+    "source": [
+-    "data = sm.datasets.get_rdataset(\"dietox\", \"geepack\").data\n",
++    "data = sm.datasets.get_rdataset(\"dietox\", \"geepack\", cache=True).data\n",
+     "md = smf.mixedlm(\"Weight ~ Time\", data, groups=data[\"Pig\"])\n",
+     "mdf = md.fit(method=[\"lbfgs\"])\n",
+     "print(mdf.summary())"
+@@ -318,7 +318,7 @@
+    "metadata": {},
+    "outputs": [],
+    "source": [
+-    "data = sm.datasets.get_rdataset(\"Sitka\", \"MASS\").data\n",
++    "data = sm.datasets.get_rdataset(\"Sitka\", \"MASS\", cache=True).data\n",
+     "endog = data[\"size\"]\n",
+     "data[\"Intercept\"] = 1\n",
+     "exog = data[[\"Intercept\", \"Time\"]]"
+--- a/examples/notebooks/regression_diagnostics.ipynb
++++ b/examples/notebooks/regression_diagnostics.ipynb
+@@ -47,8 +47,8 @@
+     "import matplotlib.pyplot as plt\n",
+     "\n",
+     "# Load data\n",
+-    "url = \"https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/master/csv/HistData/Guerry.csv\"\n",
+-    "dat = pd.read_csv(url)\n",
++    "import statsmodels.datasets\n",
++    "dat = statsmodels.datasets.get_rdataset(\"Guerry\", \"HistData\", cache=True).data\n",
+     "\n",
+     "# Fit regression model (using the natural log of one of the regressors)\n",
+     "results = smf.ols(\"Lottery ~ Literacy + np.log(Pop1831)\", data=dat).fit()\n",
+--- a/statsmodels/stats/tests/test_dist_dependant_measures.py
++++ b/statsmodels/stats/tests/test_dist_dependant_measures.py
+@@ -140,7 +140,7 @@ class TestDistDependenceMeasures:
+         0.1025087
+         """
+         try:
+-            iris = get_rdataset("iris").data.values[:, :4]
++            iris = get_rdataset("iris", cache=True).data.values[:, :4]
+         except IGNORED_EXCEPTIONS:
+             pytest.skip('Failed with HTTPError or URLError, these are random')
+ 
+@@ -180,7 +180,7 @@ class TestDistDependenceMeasures:
+         30.01526
+         """
+         try:
+-            quakes = get_rdataset("quakes").data.values[:, :3]
++            quakes = get_rdataset("quakes", cache=True).data.values[:, :3]
+         except IGNORED_EXCEPTIONS:
+             pytest.skip('Failed with HTTPError or URLError, these are random')
+ 

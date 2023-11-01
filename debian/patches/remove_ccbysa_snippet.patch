@@ -1,0 +1,92 @@
+Description: Remove code from Stack Overflow and wasteful loop
+
+Stack Overflow content is CC-BY-SA licensed,
+which this package is not supposed to be.  This snippet may be
+too small to be copyrightable, but removing it to be safe.
+
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Forwarded: no
+
+--- a/statsmodels/examples/ex_generic_mle_tdist.py
++++ b/statsmodels/examples/ex_generic_mle_tdist.py
+@@ -198,6 +198,9 @@ class MyPareto(GenericLikelihoodModel):
+         this does not trim lower values during ks optimization
+ 
+         '''
++        # all 3 of these are based on
++        # https://stackoverflow.com/questions/3242326/fitting-a-pareto-distribution-with-python-scipy
++        # validly licensed because the same person added it there and here
+         rvs = self.endog
+         rvsmin = rvs.min()
+         fixdf = np.nan * np.ones(3)
+--- a/statsmodels/graphics/regressionplots.py
++++ b/statsmodels/graphics/regressionplots.py
+@@ -435,11 +435,12 @@ def plot_partregress(endog, exog_i, exog
+     ax.set_ylabel("e(%s | X)" % y_axis_endog_name)
+     ax.set_title('Partial Regression Plot', **title_kwargs)
+ 
+-    # NOTE: if we want to get super fancy, we could annotate if a point is
+-    # clicked using this widget
++    # NOTE: it is possible to annotate if a point is clicked using
+     # http://stackoverflow.com/questions/4652439/
+     # is-there-a-matplotlib-equivalent-of-matlabs-datacursormode/
+     # 4674445#4674445
++    # but for licensing reasons this is _not_ to be directly copied
++    # into statsmodels itself
+     if obs_labels is True:
+         if data is not None:
+             obs_labels = data.index
+--- a/statsmodels/tools/sequences.py
++++ b/statsmodels/tools/sequences.py
+@@ -61,24 +61,22 @@ def primes_from_2_to(n):
+     Parameters
+     ----------
+     n : int
+-        Sup bound with ``n >= 6``.
++        Upper limit (exclusive).
+ 
+     Returns
+     -------
+     primes : list(int)
+         Primes in ``2 <= p < n``.
+-
+-    References
+-    ----------
+-    [1] `StackOverflow <https://stackoverflow.com/questions/2068372>`_.
+     """
+-    sieve = np.ones(n // 3 + (n % 6 == 2), dtype=bool)
+-    for i in range(1, int(n ** 0.5) // 3 + 1):
+-        if sieve[i]:
+-            k = 3 * i + 1 | 1
+-            sieve[k * k // 3::2 * k] = False
+-            sieve[k * (k - 2 * (i & 1) + 4) // 3::2 * k] = False
+-    return np.r_[2, 3, ((3 * np.nonzero(sieve)[0][1:] + 1) | 1)]
++    isprime = np.ones((n - 2,))  # 2...n-1, so indices offset by 2 from values
++    endidx = int(np.sqrt(n)) - 1
++    nextprime = 2
++    while True:
++        isprime[nextprime * nextprime - 2::nextprime] = 0
++        nextps = np.nonzero(isprime[nextprime - 1:endidx])[0]
++        if len(nextps) == 0:
++            return np.nonzero(isprime)[0] + 2
++        nextprime = nextprime + nextps[0] + 1
+ 
+ 
+ def n_primes(n):
+@@ -109,12 +107,13 @@ def n_primes(n):
+               953, 967, 971, 977, 983, 991, 997][:n]
+ 
+     if len(primes) < n:
+-        big_number = 10
+-        while 'Not enought primes':
++        # this should always be enough - Rosser (1941)
++        big_number = int(n * (np.log(n) + np.log(np.log(n))))
++        while True:  # not enough primes
+             primes = primes_from_2_to(big_number)[:n]
+             if len(primes) == n:
+                 break
+-            big_number += 1000
++            big_number = int(big_number * 1.5)
+ 
+     return primes
+ 

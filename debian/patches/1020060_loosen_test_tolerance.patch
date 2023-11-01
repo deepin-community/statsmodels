@@ -1,0 +1,17 @@
+Description: Loosen tolerance on a possibly unstable test
+
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Bug-Debian: https://bugs.debian.org/1020060 and 1014278
+Forwarded: https://github.com/statsmodels/statsmodels/issues/8341
+
+--- a/statsmodels/tsa/statespace/tests/test_dynamic_factor.py
++++ b/statsmodels/tsa/statespace/tests/test_dynamic_factor.py
+@@ -608,7 +608,7 @@ class TestDynamicFactor_ar2_errors(Check
+                 res1.params, method='nm', maxiter=10000,
+                 optim_score='approx', disp=False)
+             # Added rtol to catch spurious failures on some platforms
+-            assert_allclose(res.llf, self.results.llf, atol=1e-2, rtol=1e-4)
++            assert_allclose(res.llf, self.results.llf, atol=1e-2, rtol=1e-2)
+ 
+ 
+ class TestDynamicFactor_scalar_error(CheckDynamicFactor):

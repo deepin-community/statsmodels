@@ -1,0 +1,35 @@
+Description: Xfail / increase tolerance on tests
+
+TestMICE and test_mixedlm vary enough with the random state, and
+corrpsd is close enough to 0, that this is plausibly a rounding non-bug
+
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Bug-Debian: https://bugs.debian.org/997081
+Forwarded: https://github.com/statsmodels/statsmodels/issues/7911
+
+--- a/statsmodels/stats/tests/test_corrpsd.py
++++ b/statsmodels/stats/tests/test_corrpsd.py
+@@ -193,19 +193,19 @@ def test_corrpsd_threshold(threshold):
+ 
+     y = corr_nearest(x, n_fact=100, threshold=threshold)
+     evals = np.linalg.eigvalsh(y)
+-    assert_allclose(evals[0], threshold, rtol=1e-6, atol=1e-15)
++    assert_allclose(evals[0], threshold, rtol=1e-6, atol=2e-15)
+ 
+     y = corr_clipped(x, threshold=threshold)
+     evals = np.linalg.eigvalsh(y)
+-    assert_allclose(evals[0], threshold, rtol=0.25, atol=1e-15)
++    assert_allclose(evals[0], threshold, rtol=0.25, atol=2e-15)
+ 
+     y = cov_nearest(x, method='nearest', n_fact=100, threshold=threshold)
+     evals = np.linalg.eigvalsh(y)
+-    assert_allclose(evals[0], threshold, rtol=1e-6, atol=1e-15)
++    assert_allclose(evals[0], threshold, rtol=1e-6, atol=2e-15)
+ 
+     y = cov_nearest(x, n_fact=100, threshold=threshold)
+     evals = np.linalg.eigvalsh(y)
+-    assert_allclose(evals[0], threshold, rtol=0.25, atol=1e-15)
++    assert_allclose(evals[0], threshold, rtol=0.25, atol=2e-15)
+ 
+ 
+ class Test_Factor:
