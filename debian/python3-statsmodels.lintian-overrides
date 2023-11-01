@@ -1,0 +1,5 @@
+# these are test references/inputs, not user-facing text
+python3-statsmodels binary: package-contains-documentation-outside-usr-share-doc [*/statsmodels/tsa/vector_ar/tests/JMulTi_results/*.txt]
+python3-statsmodels binary: package-contains-documentation-outside-usr-share-doc [*/statsmodels/regression/tests/results/*.txt]
+python3-statsmodels binary: package-contains-documentation-outside-usr-share-doc [*/statsmodels/discrete/tests/results/*.txt]
+python3-statsmodels binary: package-contains-documentation-outside-usr-share-doc [*/statsmodels/stats/tests/test_data.txt]

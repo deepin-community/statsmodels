@@ -1,0 +1,26 @@
+Description: Avoid test failure on mipsel
+
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Bug: https://github.com/statsmodels/statsmodels/8341
+Bug-Debian: https://bugs.debian.org/1014884
+Forwarded: no
+
+--- a/statsmodels/sandbox/regression/tests/test_gmm.py
++++ b/statsmodels/sandbox/regression/tests/test_gmm.py
+@@ -9,6 +9,7 @@ from statsmodels.compat.python import lr
+ 
+ import os
+ import copy
++import platform
+ 
+ import pytest
+ import numpy as np
+@@ -564,7 +565,7 @@ class TestGMMStOneiterOLS_Linear(CheckGM
+     @classmethod
+     def setup_class(cls):
+         # replicating OLS by GMM - high agreement
+-        cls.params_tol = [1e-11, 1e-12]
++        cls.params_tol = [1e-11, 2e-12 if 'mips' in platform.uname()[4].lower() else 1e-12]
+         cls.bse_tol = [1e-12, 1e-12]
+         exog = exog_st  # with const at end
+         res_ols = OLS(endog, exog).fit()

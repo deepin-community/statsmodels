@@ -1,0 +1,72 @@
+Description: Use Python 3 in script shebangs
+
+(Skipping the two .pyx files with #!python - they need to be compiled
+with Cython, not directly run with any version of plain Python)
+
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Forwarded: no
+
+--- a/archive/docs/fix_longtable.py
++++ b/archive/docs/fix_longtable.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ import sys
+ import os
+ 
+--- a/examples/python/plots_boxplots.py
++++ b/examples/python/plots_boxplots.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # coding: utf-8
+ 
+ # DO NOT EDIT
+--- a/examples/python/robust_models_1.py
++++ b/examples/python/robust_models_1.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # coding: utf-8
+ 
+ # DO NOT EDIT
+--- a/statsmodels/regression/quantile_regression.py
++++ b/statsmodels/regression/quantile_regression.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ '''
+ Quantile regression model
+--- a/statsmodels/sandbox/examples/example_pca.py
++++ b/statsmodels/sandbox/examples/example_pca.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ 
+ import numpy as np
+ from statsmodels.sandbox.pca import Pca
+--- a/statsmodels/tools/print_version.py
++++ b/statsmodels/tools/print_version.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ from functools import reduce
+ import sys
+ from os.path import dirname
+--- a/tools/export_notebooks_to_python.py
++++ b/tools/export_notebooks_to_python.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ # -*- coding: utf-8 -*-
+ import argparse
+ import glob
+--- a/tools/generate_formula_api.py
++++ b/tools/generate_formula_api.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python
++#!/usr/bin/env python3
+ """
+ This will generate an API file for formula in dir/statsmodels/formula/api.py
+ 

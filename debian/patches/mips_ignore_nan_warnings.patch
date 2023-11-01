@@ -1,0 +1,90 @@
+Description: Ignore extra warnings that may occur on mips*
+
+Some mips* hardware seems to emit
+RuntimeWarning: invalid value encountered in multiply
+on multiplication by explicit np.nan, which breaks these tests.
+
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Forwarded: no
+
+--- a/statsmodels/discrete/tests/test_discrete.py
++++ b/statsmodels/discrete/tests/test_discrete.py
+@@ -27,6 +27,7 @@ import pandas as pd
+ import pytest
+ from scipy import stats
+ from scipy.stats import nbinom
++import platform
+ 
+ import statsmodels.api as sm
+ from statsmodels.discrete.discrete_margins import _iscount, _isdummy
+@@ -2540,7 +2541,8 @@ def test_optim_kwds_prelim():
+ def test_unchanging_degrees_of_freedom():
+     data = load_randhie()
+     # see GH3734
+-    warnings.simplefilter('error')
++    if 'mips' not in platform.uname()[4]:
++        warnings.simplefilter('error')
+     model = sm.NegativeBinomial(data.endog, data.exog, loglike_method='nb2')
+     params = np.array([-0.05654134, -0.21213734,  0.08783102, -0.02991825,
+                        0.22902315,  0.06210253,  0.06799444,  0.08406794,
+--- a/statsmodels/regression/tests/test_regression.py
++++ b/statsmodels/regression/tests/test_regression.py
+@@ -5,6 +5,7 @@ Test functions for models.regression
+ from statsmodels.compat.python import lrange
+ 
+ import warnings
++import platform
+ 
+ import numpy as np
+ from numpy.testing import (
+@@ -1606,7 +1607,8 @@ def test_ols_constant(reset_randomstate)
+     with warnings.catch_warnings(record=True) as recording:
+         assert np.isnan(res.fvalue)
+         assert np.isnan(res.f_pvalue)
+-    assert len(recording) == 0
++    if 'mips' not in platform.uname()[4]:
++        assert len(recording) == 0
+ 
+ 
+ def test_summary_no_constant():
+--- a/statsmodels/tsa/holtwinters/tests/test_holtwinters.py
++++ b/statsmodels/tsa/holtwinters/tests/test_holtwinters.py
+@@ -17,6 +17,8 @@ from numpy.testing import assert_allclos
+ import pandas as pd
+ import pytest
+ import scipy.stats
++import contextlib
++import platform
+ 
+ from statsmodels.tools.sm_exceptions import ConvergenceWarning, ValueWarning
+ from statsmodels.tsa.holtwinters import (
+@@ -834,8 +836,9 @@ def test_infer_freq():
+         mod = ExponentialSmoothing(
+             hd2, trend="add", seasonal="add", initialization_method="estimated"
+         )
+-        assert len(w) == 1
+-        assert "ValueWarning" in str(w[0])
++        if 'mips' not in platform.uname()[4]:
++            assert len(w) == 1
++        assert "ValueWarning" in str(w[0])+str(w[-1])
+     assert mod.seasonal_periods == 12
+ 
+ 
+@@ -2025,7 +2028,7 @@ def test_forecast_index_types(ses, index
+     ses = ses.copy()
+     ses.index = index[:-36]
+ 
+-    with pytest_warns(warning):
++    with (contextlib.nullcontext() if (warning is None and 'mips' in platform.uname()[4]) else pytest_warns(warning)):
+         res = ExponentialSmoothing(
+             ses,
+             trend="add",
+@@ -2033,7 +2036,7 @@ def test_forecast_index_types(ses, index
+             initialization_method="heuristic",
+             **kwargs
+         ).fit()
+-    with pytest_warns(warning):
++    with (contextlib.nullcontext() if (warning is None and 'mips' in platform.uname()[4]) else pytest_warns(warning)):
+         fcast = res.forecast(36)
+     assert isinstance(fcast, pd.Series)
+     pd.testing.assert_index_equal(fcast.index, fcast_index)

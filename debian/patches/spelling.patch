@@ -1,0 +1,49 @@
+Description: Fix typos
+
+Origin: lintian
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Forwarded: https://github.com/statsmodels/statsmodels/issues/8932
+
+--- a/statsmodels/tsa/stl/_stl.pyx
++++ b/statsmodels/tsa/stl/_stl.pyx
+@@ -246,11 +246,11 @@ cdef class STL(object):
+         self.low_pass_deg = low_pass_deg  # ildeg
+         self.robust = robust
+         if not _is_pos_int(low_pass_jump, False):
+-            raise ValueError('low_pass_jump must be a positve integer')
++            raise ValueError('low_pass_jump must be a positive integer')
+         if not _is_pos_int(seasonal_jump, False):
+-            raise ValueError('seasonal_jump must be a positve integer')
++            raise ValueError('seasonal_jump must be a positive integer')
+         if not _is_pos_int(trend_jump, False):
+-            raise ValueError('trend_jump must be a positve integer')
++            raise ValueError('trend_jump must be a positive integer')
+         self.low_pass_jump = low_pass_jump
+         self.seasonal_jump = seasonal_jump
+         self.trend_jump = trend_jump
+--- a/statsmodels/tsa/stl/tests/test_stl.py
++++ b/statsmodels/tsa/stl/tests/test_stl.py
+@@ -232,17 +232,17 @@ def test_jump_errors(default_kwargs):
+     class_kwargs, _, _ = _to_class_kwargs(default_kwargs)
+     endog = class_kwargs["endog"]
+     period = class_kwargs["period"]
+-    with pytest.raises(ValueError, match="low_pass_jump must be a positve"):
++    with pytest.raises(ValueError, match="low_pass_jump must be a positive"):
+         STL(endog=endog, period=period, low_pass_jump=0)
+-    with pytest.raises(ValueError, match="low_pass_jump must be a positve"):
++    with pytest.raises(ValueError, match="low_pass_jump must be a positive"):
+         STL(endog=endog, period=period, low_pass_jump=1.0)
+-    with pytest.raises(ValueError, match="seasonal_jump must be a positve"):
++    with pytest.raises(ValueError, match="seasonal_jump must be a positive"):
+         STL(endog=endog, period=period, seasonal_jump=0)
+-    with pytest.raises(ValueError, match="seasonal_jump must be a positve"):
++    with pytest.raises(ValueError, match="seasonal_jump must be a positive"):
+         STL(endog=endog, period=period, seasonal_jump=1.0)
+-    with pytest.raises(ValueError, match="trend_jump must be a positve"):
++    with pytest.raises(ValueError, match="trend_jump must be a positive"):
+         STL(endog=endog, period=period, trend_jump=0)
+-    with pytest.raises(ValueError, match="trend_jump must be a positve"):
++    with pytest.raises(ValueError, match="trend_jump must be a positive"):
+         STL(endog=endog, period=period, trend_jump=1.0)
+ 
+ 

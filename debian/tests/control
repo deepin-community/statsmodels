@@ -1,0 +1,11 @@
+Tests: upstreamtests
+Depends: python3-all, python3-statsmodels, python3-pytest,
+            python3-matplotlib,
+            python3-joblib,
+            python3-colorama,
+            python3-cvxopt,
+            python3-dateutil,
+            python3-jinja2,
+            python3-tk
+Restrictions: allow-stderr
+

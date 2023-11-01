@@ -1,5 +1,937 @@
-template-repository (1.0-1) unstable; urgency=medium
+statsmodels (0.14.0+dfsg-4) unstable; urgency=medium
 
-  * Initial release
+  * clean: remove all generated files. (Closes: #1047280)
+  * Stop build-depending on python3-setuptools-scm-git-archive.
+    (Closes: #1050104)
 
- -- Tsic404 <liuheng@deepin.org>  Sat, 28 Jan 2023 13:46:49 +0800
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sat, 19 Aug 2023 21:59:16 +0100
+
+statsmodels (0.14.0+dfsg-3) unstable; urgency=medium
+
+  * Tests: fix bugs in the preceding exclusions.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Fri, 04 Aug 2023 18:42:09 +0100
+
+statsmodels (0.14.0+dfsg-2) unstable; urgency=medium
+
+  * Tests: ignore out-of-memory error.
+  * Tests: ignore armel's lack of division-by-0 warnings and
+    corr_nearest_factor non-convergence, but not all the armel tests.
+  * Tests: ignore mips*'s extra multiply-by-NaN warnings.
+  * Tests: ignore i386 probable rounding/instability/overflow issues.
+  * Upload to unstable.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Thu, 03 Aug 2023 22:28:34 +0100
+
+statsmodels (0.14.0+dfsg-1) experimental; urgency=medium
+
+  * New upstream release.  Drop/refresh patches, d/copyright.
+  * Upload to experimental, as of unknown compatibility.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sun, 23 Jul 2023 12:01:09 +0100
+
+statsmodels (0.13.5+dfsg-7) unstable; urgency=medium
+
+  * Tests: relax a tolerance to avoid randomly failing on s390x.
+  * Docs: fix broken link.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Tue, 14 Feb 2023 22:28:59 +0000
+
+statsmodels (0.13.5+dfsg-6) unstable; urgency=medium
+
+  * Tests: ignore a non-convergence on mipsel.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sat, 04 Feb 2023 20:49:19 +0000
+
+statsmodels (0.13.5+dfsg-5) unstable; urgency=medium
+
+  * Tests: don't crash on 32-bit systems.  (Closes: #1030208)
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Wed, 01 Feb 2023 21:31:58 +0000
+
+statsmodels (0.13.5+dfsg-4) unstable; urgency=medium
+
+  * Tests: fix missing import.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Wed, 11 Jan 2023 23:51:04 +0000
+
+statsmodels (0.13.5+dfsg-3) unstable; urgency=medium
+
+  * Tests: depend on jinja2, reduce random failures,
+    ignore a non-warning on mips*.
+  * Don't try to load intersphinx links from python-numpy-doc,
+    as it no longer exists.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Wed, 11 Jan 2023 19:32:55 +0000
+
+statsmodels (0.13.5+dfsg-2) unstable; urgency=medium
+
+  * Don't try to load intersphinx links from python-matplotlib-doc,
+    as it no longer exists.  (Closes: #1027537)
+  * Bump Standards-Version to 4.6.2 (no changes needed).
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Thu, 05 Jan 2023 20:34:52 +0000
+
+statsmodels (0.13.5+dfsg-1) unstable; urgency=medium
+
+  * Upstream bugfix release.  Drop / refresh patches, d/copyright.
+  * Update Build-Depends.
+  * Bump Standards-Version to 4.6.1 (no changes needed).
+  * Tests: remove xfails that appear to no longer be needed.
+  * Tests: loosen tolerance on TestDynamicFactor_ar2_errors as it
+    appears to be unstable.  (Closes: #1020060, #1014278)
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Wed, 30 Nov 2022 21:29:37 +0000
+
+statsmodels (0.13.2+dfsg-4) unstable; urgency=medium
+
+  * Tests: increase one error tolerance.  (Closes: #1014884)
+  * Update Lintian override format (see #1007002).
+  * Remove no longer needed Lintian / Salsa CI overrides.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sun, 24 Jul 2022 17:51:07 +0100
+
+statsmodels (0.13.2+dfsg-3) unstable; urgency=medium
+
+  * Add s390x to DynamicFactor warning/xfail (workaround for #1014278).
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sat, 09 Jul 2022 11:15:30 +0100
+
+statsmodels (0.13.2+dfsg-2) unstable; urgency=medium
+
+  * Tests: ignore a probable rounding issue.  (Closes: #1008301)
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sun, 27 Mar 2022 12:20:47 +0100
+
+statsmodels (0.13.2+dfsg-1) unstable; urgency=medium
+
+  * Upstream bugfix release.  Refresh patches.
+  * Enable Salsa CI.
+  * Warn that ETSModel may give wrong results on 32-bit and xfail test.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sun, 20 Feb 2022 20:03:58 +0000
+
+statsmodels (0.13.1+dfsg-5) unstable; urgency=medium
+
+  * Warn on import and ignore (crashing) tests on armel (see #968210).
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sun, 06 Feb 2022 19:08:08 +0000
+
+statsmodels (0.13.1+dfsg-4) unstable; urgency=medium
+
+  * Warn that DynamicFactor may give wrong results on armhf
+    and xfail tests.
+  * Update Lintian overrides.
+  * Fix pyversions call.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sat, 05 Feb 2022 17:46:33 +0000
+
+statsmodels (0.13.1+dfsg-3) unstable; urgency=medium
+
+  * Warn on import and ignore (crashing) tests on mips64el,
+    and not on armel (see #968210).
+  * Remove obsolete rules code and nose test-depends.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Fri, 17 Dec 2021 22:32:59 +0000
+
+statsmodels (0.13.1+dfsg-2) unstable; urgency=medium
+
+  * Docs: use *_path and symlinks for local JavaScript,
+    instead of (broken by CORS) sed replacements.
+  * Xfail another possible rounding issue on i386.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Mon, 29 Nov 2021 22:05:33 +0000
+
+statsmodels (0.13.1+dfsg-1) unstable; urgency=medium
+
+  * New upstream release.  Drop / refresh patches.
+  * Update watch file.
+  * Update d/copyright, exclude possibly illegal data file.
+  * Xfail some probable rounding issues.  Closes: #997081.
+  * Docs: update MathJax URL replacement.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sun, 28 Nov 2021 16:30:27 +0000
+
+statsmodels (0.12.2-2) unstable; urgency=medium
+
+  * Fix test failures with scipy 1.7.  Closes: #992681.
+  * README.source: update upstream branch name.
+  * Bump Standards-Version to 4.6.0 (no changes needed).
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sun, 29 Aug 2021 20:09:28 +0100
+
+statsmodels (0.12.2-1) unstable; urgency=medium
+
+  * Upstream bugfix release.  Drop / refresh patches.
+  * Don't use the multiarch path for architecture detection.  Closes: #973854.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sat, 06 Feb 2021 16:48:16 +0000
+
+statsmodels (0.12.1-2) unstable; urgency=medium
+
+  * Team upload.
+  * debian patch scipy_1.6_test_bytestring.patch uses string rather
+    than bytes in expected message with scipy 1.6 in test_arma_kwargs
+    (test_gls.py)
+  * Standards-Version: 4.5.1
+
+ -- Drew Parsons <dparsons@debian.org>  Mon, 18 Jan 2021 01:02:15 +1100
+
+statsmodels (0.12.1-1) unstable; urgency=medium
+
+  * Upstream bugfix release.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Thu, 05 Nov 2020 07:28:38 +0000
+
+statsmodels (0.12.0-2) unstable; urgency=medium
+
+  * Loosen some test tolerances on i386.
+  * Require scipy >= 1.5 to avoid autopkgtest failure.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Fri, 11 Sep 2020 07:24:40 +0100
+
+statsmodels (0.12.0-1) unstable; urgency=medium
+
+  * New upstream release.  Drop / refresh patches.
+  * Update d/copyright.
+  * Stop using pytest-forked everywhere: it doesn't fully
+    handle conditional xfails.
+  * Skip slow autopkgtests on non-amd64.
+  * On armel, warn on import and ignore all tests (see #968210).
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Tue, 08 Sep 2020 18:35:08 +0100
+
+statsmodels (0.11.1-5) unstable; urgency=medium
+
+  * Ignore test failures on arm* (see #968210).
+  * Use pytest-forked in case there are more crashing tests.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sun, 16 Aug 2020 19:00:44 +0100
+
+statsmodels (0.11.1-4) unstable; urgency=medium
+
+  * Tests: ignore changes due to matplotlib 3.3 and scipy 1.5.
+    Closes: #966712.
+  * Bump debhelper compat to 13.
+  * Override Lintian warning from test references.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sun, 09 Aug 2020 22:12:11 +0100
+
+statsmodels (0.11.1-3) unstable; urgency=medium
+
+  * Tests: ignore harmless new warnings.  Closes: #964700.
+  * Add matplotlib etc to autopkgtest Depends to skip fewer tests.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Fri, 10 Jul 2020 06:46:36 +0100
+
+statsmodels (0.11.1-2) unstable; urgency=medium
+
+  * Tests: don't require a numpy warning that doesn't exist on armel.
+    Closes: #956882.
+  * Tests: allow no-multiprocessing failures (hurd-i386).
+  * Remove inconveniently licensed (CC-BY-SA) snippet.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Fri, 24 Apr 2020 15:17:04 +0100
+
+statsmodels (0.11.1-1) unstable; urgency=medium
+
+  * Upstream bugfix release.
+  * Drop patches applied upstream, refresh others.
+  * Don't require a warning scipy only produces on some architectures.
+  * Warn that Markov(Auto)regression can give wrong answers on armhf
+    and DynamicFactor on ppc64el, and xfail tests.
+  * Upload to unstable.  Closes: #950429.
+  * Re-enable checking the test suite.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Mon, 24 Feb 2020 22:49:06 +0000
+
+statsmodels (0.11.0-1) experimental; urgency=medium
+
+  * New upstream release.
+  * Upload to experimental, as this is an API break (see #950429).
+  * Drop patches applied upstream, refresh others.
+  * Update and sort dependencies.
+  * Docs: use nature theme because we don't have sphinx_material,
+    remove obsolete GLMNotes,
+    don't skip unrunnable examples.
+  * Update and sort d/copyright.
+  * Fix some test failures (that were not real problems).
+  * Use local requirejs.
+  * Fix spelling and whitespace.
+  * Reproducibility: remove more build paths.
+  * Loosen tolerance on another flaky test.
+  * Temporarily ignore the test suite to get a first build.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sun, 02 Feb 2020 21:51:06 +0000
+
+statsmodels (0.10.2-2) unstable; urgency=medium
+
+  * Docs: don't fail the build on no-network exceptions.  Closes: #950087.
+  * Remove #945501 cleanup code: not worth the risk in (future) stable.
+  * Bump Standards-Version to 4.5.0 (no changes needed).
+  * Include offset and exposure in GEE fittedvalues (upstream bug 5253).
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Tue, 28 Jan 2020 22:29:29 +0000
+
+statsmodels (0.10.2-1) unstable; urgency=medium
+
+  * New upstream release.
+  * Drop patches applied upstream, refresh others.
+  * Use symlink_to_dir for documentation move,
+    and clean up old files.  Closes: #945501.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Tue, 03 Dec 2019 21:23:04 +0000
+
+statsmodels (0.10.1-5) unstable; urgency=medium
+
+  * No-change upload to unstable.  Closes: #934870, #931540.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sun, 10 Nov 2019 16:32:41 +0000
+
+statsmodels (0.10.1-4) experimental; urgency=medium
+
+  * Xfail another actual failure
+    and a few other similar tests as #924036.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sat, 09 Nov 2019 22:31:23 +0000
+
+statsmodels (0.10.1-3) experimental; urgency=medium
+
+  * Xfail another (intermittent?) instance of #924036.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sat, 09 Nov 2019 09:51:35 +0000
+
+statsmodels (0.10.1-2) experimental; urgency=medium
+
+  * Fail the build on test failures.
+  * Xfail or loosen tolerances on some tests.
+    Together, the above Closes: #944054.
+  * Use correct Python version for test_lazy_imports.
+  * Xfail more tests affected by #924036.
+  * Documentation build: fix errors loading pre-cached data,
+    load autosummary.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Fri, 08 Nov 2019 22:27:02 +0000
+
+statsmodels (0.10.1-1) experimental; urgency=medium
+
+  * New upstream release.
+  * Upload to experimental, as this might be an API break
+    (see #931540).
+  * Simplify gbp.conf, import both tarball and upstream git,
+    and document this in README.source.
+  * Drop patches no longer needed, refresh others.
+  * Don't map r-cran-cardata to car: upstream now use the new name.
+  * Drop Python 2 packages (see #934870).
+  * Use Python 3 shebangs.
+  * Don't use setup.py clean, as upstream have disabled it.
+  * Use http(s)_proxy instead of a patch to block test downloads.
+  * Run build-time tests with the paths they expect.
+  * Update d/copyright.
+  * Don't install setup.cfg.
+  * Don't write to the source tree during tests.
+  * Bump Standards-Version to 4.4.1 (no changes needed).
+  * Reproducibility: fix date replacement bug, use UTC time.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sat, 02 Nov 2019 16:56:50 +0000
+
+statsmodels (0.9.0-6) unstable; urgency=medium
+
+  * Don't change global pickle settings,
+    as this can break unrelated code.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Fri, 20 Sep 2019 19:23:49 +0100
+
+statsmodels (0.9.0-5) unstable; urgency=medium
+
+  * Update import paths to be compatible with scipy 1.3.
+  * Xfail another KalmanFilter test on armhf (#924036).
+  * Mark -lib packages Multi-Arch: same.
+  * Delete unused patches, document patches upstream status.
+  * Upload to unstable.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sun, 15 Sep 2019 21:50:15 +0100
+
+statsmodels (0.9.0-4) experimental; urgency=medium
+
+  * Loosen singularity detection threshold of VAR model.
+  * Make KalmanFilter warning (#924036) work on multiarch arm64/armhf
+    and xfail some more related tests.
+  * Adapt TestLagmat.test_unknown_trim to work with newer numpy.
+  * Loosen TestMultivariateVARUnivariate tolerances on i386.
+  * Xfail TestHoltWinters.test_forecast (like upstream).
+    Together, the above Closes: #938949.
+  * Use Breaks+Replaces for examples move to -doc.  Closes: #938995.
+  * Remove no longer needed s390x xfails/warning.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sat, 14 Sep 2019 10:38:33 +0100
+
+statsmodels (0.9.0-3) experimental; urgency=medium
+
+  * Upload to experimental, as 0.9 is an API break (see #931540).
+  * Merge 0.8.0-9 packaging into 0.9.  Drop patches no longer needed,
+    refresh others.
+  * Revert "Disable KalmanFilter on armhf" as it never actually
+    worked (see #924036 / LP#1819227).  Instead,
+    warn on use and xfail the tests.
+  * Add self to Uploaders.
+  * Tests now use pytest: add build-dependencies, adapt autopkgtest.
+  * Remove test skips that are no longer needed.
+  * Change s390x test skips to xfails (to check whether they are
+    still needed), and warn if l1_cvxopt_cp is used on s390x.
+  * Fix issues due to newer versions of dependencies:
+    - AnovaRM column order
+    - various issues within test code
+  * Fix midrule bug in LaTeX summary output.
+  * Clean up stray whitespace.
+  * Fix typos.
+  * Clarify -lib description.
+  * Use https in links, and update Homepage.
+  * Update and sort d/copyright.
+  * Bump Standards-Version to 4.4.0 (no changes needed).
+  * Give a more useful error if cvxopt is not available.
+  * Use debhelper-compat.
+  * Move examples to the -doc package.
+  * Remove obsolete symlink, add symlinks to ease finding docs.
+  * Strip timestamps and build paths for reproducibility.
+  * Deduplicate documentation images.
+  * Fix/improve nocheck/nodoc dependency marking.
+  * Categorize build-dependencies.
+  * Make -doc Suggest the Python 3 version.
+  * Run the R-using examples.
+  * Use data from R packages for building examples, instead of
+    embedding a copy.  Modify one example to not need r-cran-count.
+  * Set Rules-Requires-Root: no.
+  * Remove outdated cythonized-files.
+  * Don't use pickle for get_rdataset caching, as it is a security hole
+    if the cache is shared.  (This invalidates existing cached data;
+    it will automatically be re-downloaded if needed.)
+  * Warn that load_pickle is for trusted files only.
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Fri, 30 Aug 2019 07:48:41 +0100
+
+statsmodels (0.8.0-9) unstable; urgency=medium
+
+  * Team upload.
+  * Disable KalmanFilter on armhf, as it gives wrong results
+    (and probably always has).
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Sat, 02 Mar 2019 14:59:35 +0000
+
+statsmodels (0.8.0-8) unstable; urgency=medium
+
+  * Team upload.
+  * Remove outdated information from description.
+  * Use sphinx.ext.mathjax rather than no-longer-existing pngmath.
+    This also fixes equation display  Closes: #687301
+  * Fix spelling.
+  * Fix remote -> local requirejs substitution.
+  * Use text instead of fetching a logo.
+  * Make dataset caching work in Python 3.
+  * Extend use_cached_datasets to build more of the examples.
+  * Fix path and data layout exceptions in examples.
+  * Re-enable build-time tests, and clean up files they leave behind.
+  * Use upstream tests as autopkgtest.
+  * Move metadata to d/u/metadata, update and extend it.
+  * Update d/copyright.
+  * Fix exceptions due to newer versions of dependencies:
+    - "no attribute 'chisqprob'" in discrete_model
+    - "shape mismatch...could not be broadcast" in imputation
+    - "ufunc 'gammaln' not supported" in discrete_model
+    - "object arrays are not supported" in tsa.statespace
+    - "module 'pandas' has no attribute 'ols'" in tsa.vector_ar
+    - various IndexErrors in KaplanMeier  Closes: #860449
+    - "unexpected keyword argument 'format'" in datasets.co2
+    - UnicodeDecodeError in parse_lutkepohl_data
+    - various issues within test and example code
+  * Backport the following from experimental:
+
+  [ Julian Taylor ]
+  * Use python3 also for fold_toc.py
+  * Use fixed locale for documentation build
+
+  [ Andreas Tille ]
+  * hardening=+all
+  * Use libjs-mathjax
+  * Extend description of -doc package
+  * Remove matplotlib.sphinxext.only_directives option which is
+    not used.  Closes: #917754
+  * Do not try to access remote locations on buildtime test
+    Closes: #882641
+
+ -- Rebecca N. Palmer <rebecca_palmer@zoho.com>  Fri, 01 Mar 2019 22:49:09 +0000
+
+statsmodels (0.9.0-2) experimental; urgency=medium
+
+  * Team upload.
+  * Version 0.9 closes: #880245
+  * Remove matplotlib.sphinxext.only_directives option which is not used
+    Closes: #917754
+  * Do not try to access remote locations on buildtime test
+    Closes: #882641
+  * debhelper 12
+
+ -- Andreas Tille <tille@debian.org>  Wed, 13 Feb 2019 09:27:21 +0100
+
+statsmodels (0.9.0-1) experimental; urgency=medium
+
+  [ Andreas Tille ]
+  * Team upload.
+  * Fix watch file (do not report development tags)
+  * debhelper 11
+  * Standards-Version: 4.2.1
+  * New Build-Depends / Recommends: python*-colorama
+  * Drop useless get-orig-source target
+  * Fix permissions
+  * hardening=+all
+  * Use libjs-mathjax
+
+  [ Julian Taylor ]
+  * adapt use-python3-for-doc-build to also use python3 for fold_toc.py
+
+ -- Andreas Tille <tille@debian.org>  Sun, 28 Oct 2018 18:56:40 +0100
+
+statsmodels (0.8.0-7) unstable; urgency=medium
+
+  * Team upload
+  * Use pybuild --print build_dir to fix FTBFS with
+    dh-python >= 3.20180313 (Closes: #894572)
+  * Update Vcs-* URIs for move to salsa.debian.org
+  * Remove ancient Python version fields
+
+ -- Graham Inggs <ginggs@debian.org>  Wed, 27 Jun 2018 17:02:07 +0000
+
+statsmodels (0.8.0-6) unstable; urgency=medium
+
+  * Build the architecture dependent files before building documentation
+  * Add myself to uploaders.
+
+ -- Diane Trout <diane@ghic.org>  Fri, 29 Sep 2017 22:17:33 -0700
+
+statsmodels (0.8.0-5) unstable; urgency=medium
+
+  * Team Upload
+
+  [ Diane Trout ]
+  * add sphinx-common to Build-Depends which fixes a FTBFS caused by
+    Sphinxdoc.pm not being present when building binary only packages.
+  * Split dh_auto_build-arch and dh_auto_build-indep targets so we only
+    build the docs once.
+
+ -- Diane Trout <diane@ghic.org>  Fri, 29 Sep 2017 16:48:20 -0700
+
+statsmodels (0.8.0-4) unstable; urgency=medium
+
+  * Team upload
+
+  [ Diane Trout ]
+  * Add python-dateutil, patsy, tk as build depends
+    Marking nose & tk as !nocheck
+  * Add Python3 support
+    (Closes: #729956) (Closes: #782963) (Closes: #834495)
+  * Update Python 3 build depends, add components necessary to build
+    notebook examples
+  * Lintian warned that Conflicts with version should probably be Breaks
+  * Add use-system-inventory patch to use intersphinx inventory files from
+    other Debian doc packages.
+    Added those packages to the -doc package suggests list
+  * Let dh_sphinxdoc manage jquery dependencies.
+    Add libjs-requirejs for building notebooks.
+  * Use Python 3 for documentation building, and enable building notebook
+    examples as jupyter components are now available in stable.
+  * Extend a python3-statsmodels-lib description to make lintian happier
+  * Cleanup more files that might be generated during build
+  * Exclude test_sarimax test_structural test_dynamic_factor test_varmax
+    from unit testing
+    Closes: #873512
+  * add patch use-cached-datasets, and cache all of the get_rdataset
+    datasets in debian/datasets/. This is needed so the documentation will
+    build without network access.
+  * Document data files needed for documentation in debian/README.source
+
+  [ Andreas Tille ]
+  * Standards-Version: 4.1.0 (no changes needed)
+  * Add remark about documenting R data to debian/README.source
+  * Updating d/copyright
+  * DEP3
+
+ -- Diane Trout <diane@ghic.org>  Tue, 26 Sep 2017 23:55:47 -0700
+
+statsmodels (0.8.0-3) unstable; urgency=medium
+
+  * Team upload.
+  * d/rules: do not run the testsuite when only building arch:all packages.
+    (Closes: #872603)
+  * d/copyright: use https form for the copyright-format URL.
+  * d/control:
+    + promote the package to priority optional, per policy 4.0.1.
+    + bump Standards-Version to 4.0.1.
+
+ -- Sébastien Villemot <sebastien@debian.org>  Sat, 19 Aug 2017 11:42:08 +0200
+
+statsmodels (0.8.0-2) unstable; urgency=medium
+
+  * Team upload.
+
+  [ Sébastien Villemot ]
+  * Upload to unstable
+  * d/rules: fix logic of {build,binary}-indep for building doc.
+  * d/control:
+    + add missing build-dependency on dh-python.
+    + promote python-pandas to a Depends. It is really needed if one wants to
+      import statsmodels (and otherwise autopkgtest fails).
+
+  [ Andreas Tille ]
+  * d/p/skip_tests_failing_due_to_panda_issue.patch: new patch, removes tests
+    from test suite that fail because of pandas and can not easily be fixed.
+  * d/p/fix_numdocpy_issue.patch: new patch, fixes other issue with numpydoc.
+    (Closes: #868977)
+
+  [ Yaroslav Halchenko ]
+  * Bump to debhelper compat level 9.
+
+ -- Sébastien Villemot <sebastien@debian.org>  Fri, 18 Aug 2017 22:40:39 +0200
+
+statsmodels (0.8.0-1) experimental; urgency=medium
+
+  * Fresh upstream release resolving various compatibility issues etc
+    - absborbs some of previously carried patches (dropped from quilt):
+      fix_wrong_index_type.patch
+      workaround_panda_readtable_bug.patch
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 08 Feb 2017 13:08:38 -0500
+
+statsmodels (0.8.0~rc1+git59-gef47cd9-5) unstable; urgency=medium
+
+  * Team upload.
+  * Fix test skipping for s390
+
+ -- Ole Streicher <olebole@debian.org>  Mon, 26 Dec 2016 18:33:56 +0100
+
+statsmodels (0.8.0~rc1+git59-gef47cd9-4) unstable; urgency=medium
+
+  * Team upload.
+  * Disable test_smoke_plot_and_repr() and test_pandas() on s390x:
+    probably a matplotlib bug there
+
+ -- Ole Streicher <olebole@debian.org>  Mon, 26 Dec 2016 15:38:06 +0100
+
+statsmodels (0.8.0~rc1+git59-gef47cd9-3) unstable; urgency=medium
+
+  * Work around a Pandas readttable bug to fix (temporary) FTBFS on i386
+
+ -- Ole Streicher <olebole@debian.org>  Mon, 26 Dec 2016 11:46:23 +0100
+
+statsmodels (0.8.0~rc1+git59-gef47cd9-2) unstable; urgency=medium
+
+  * Team upload.
+  * Move package to Debian Science Team maintenance (permission from
+    Yaroslav Halchenko)
+  * Fix index type in `reshape` to be integer. Closes: #848782
+
+ -- Ole Streicher <olebole@debian.org>  Sun, 25 Dec 2016 14:52:31 +0100
+
+statsmodels (0.8.0~rc1+git59-gef47cd9-1) unstable; urgency=medium
+
+  * Fresh upstream rc snapshot which hopefully addresses some
+    outstanding FTBFS etc issues
+  * debian/control
+    - allow for ipython >= 5 as alternative to ipython for now,
+      and also for traitlets explicitly on those newer systems
+      (Closes: #843414)
+    - adjusted vcs-browser (Closes: #843407)
+  * debian/rules
+    - skip test_plot_month test
+      (see https://github.com/statsmodels/statsmodels/issues/3283)
+  * debian/patches/up_3239
+    - to cast index into array before sorting (Closes: #841610)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Sat, 19 Nov 2016 19:37:43 -0500
+
+statsmodels (0.8.0~rc1+git43-g1ac3f11-1) unstable; urgency=medium
+
+  * Snapshot of a new upstream release candidate
+    - should resolve some failing tests causing FTBFS (Closes: #837232)
+  * debian/patches
+    - all changes* were dropped (upstreamed)
+    + deb_no_nbformat_for_now - since no nbformat, do not generate ipython
+      notebooks for now
+  * debian/control
+    - boost policy to 3.9.8
+    - python-numpydoc to build-depends-indep
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 19 Sep 2016 09:23:49 -0400
+
+statsmodels (0.6.1-10) UNRELEASED; urgency=medium
+
+  * debian/control
+    - apparently on e.g. 14.04 we have to depend on pandoc, so making it
+      not an alternative to nodejs
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 29 Apr 2016 09:30:57 -0400
+
+statsmodels (0.6.1-9) neurodebian; urgency=medium
+
+  * CP df820642c16d8486e8b676e07675afbbfd4824d8 to stay compatible with older
+    versions on nose (precise and alike)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 27 Apr 2016 22:12:50 -0400
+
+statsmodels (0.6.1-8) unstable; urgency=medium
+
+  * Resolving by skipping the very last standing failing test on s390
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 26 Apr 2016 21:42:10 -0400
+
+statsmodels (0.6.1-7) unstable; urgency=medium
+
+  * BF: adjusted changeset_3faba6e002641e95a0c6007c826fabb9c423686e.diff to
+    not use kwarg for compat with elderly pandas. Should resolve FTBFS on
+    many platforms still carrying elderly pandas
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 26 Apr 2016 08:42:12 -0400
+
+statsmodels (0.6.1-6) unstable; urgency=medium
+
+  * debian/patches
+    - picked up a set of patches to hopefully mitigate compatibility issues
+      with elderly pandas available on some platforms
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Mon, 25 Apr 2016 18:32:29 -0400
+
+statsmodels (0.6.1-5) unstable; urgency=medium
+
+  * Fixes for compatibility with recent numpy and pandas
+    (Closes: #807025, #659405)
+  * examples/ were moved out of the module, so now they get manually installed
+    under /usr/share/doc/python-statsmodels/examples (Closes: #752977)
+  * debian/control
+    - policy boosted to 3.9.7
+    - removed obsolete transitional package python-scikits.statsmodels
+  * debian/watch
+    - fixed to use github.com tags directly
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Sun, 24 Apr 2016 18:55:01 -0400
+
+statsmodels (0.6.1-4) unstable; urgency=medium
+
+  * Move ipython-notebook and zmq to build-depends-indep since needed only for
+    documentation building
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 20 May 2015 17:29:08 -0400
+
+statsmodels (0.6.1-3) unstable; urgency=medium
+
+  * upload to unstable -- jessie is out
+  * debian/control
+    - raised minimal cython version to be used to 0.19
+    - provide Build-Depends-Indep to separate handling for building
+      binary-indep packages, and allow pandoc instead of nodejs
+      for extra robustness (thanks Edmund for the hint) (Closes: #770631)
+  * debian/{control,rules}
+    - Recommend libjs-mathjax and refer to locally installed MathJax.js
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Sun, 17 May 2015 21:12:33 -0400
+
+statsmodels (0.6.1-1) experimental; urgency=medium
+
+  * New upstream release
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 03 Dec 2014 11:06:18 -0500
+
+statsmodels (0.6.0~rc2-1) unstable; urgency=medium
+
+  * Upstream release candidate
+  * debian/patches
+    - changeset_ee75d978ec4c46b506b5429d4f65fdf38866ec4d.diff redone into
+      deb_use_internal_ipythonsphinx_extensions to facilate building
+      documentation on older systems
+    - up_explicit_path_to_nbgenerate to provide explict path to notebooks
+  * debian/rules
+    - clean up cythonize.dat
+  * debian/control
+    - nodejs was added to build-depends (neccessary for docs building)
+    - boost policy to 3.9.6 (no changes)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 22 Oct 2014 19:32:58 -0400
+
+statsmodels (0.5.0+git13-g8e07d34-2) unstable; urgency=medium
+
+  * debian/patches
+    - changeset_ee75d978ec4c46b506b5429d4f65fdf38866ec4d.diff
+      to resolve FTBFS by using packaged ipython provided
+      extensions (Closes: #753232)
+    - up_reduce_test_precision to resolve failing
+      TestRegressionNM.test_ci_beta2 test on 32bit
+  * debian/control
+    - suggest -doc package (Closes: #740348)
+  * debian/rules
+    - exclude testing of the sandbox (let kids do wild things there and
+      mentors keep their hair) -- otherwise test break due to scipy 0.14.0 API
+      breakage (f_gen)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 16 Jul 2014 12:03:55 -0400
+
+statsmodels (0.5.0+git13-g8e07d34-1) unstable; urgency=low
+
+  * Fresh snapshot of 0.5.x maintenance branch
+    - resolved failing test causing to FTBFS (Closes: #730727)
+  * debian/control
+    - python-cvxopt added to Build-Depends (testing) and Recommends
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Thu, 28 Nov 2013 20:17:42 -0500
+
+statsmodels (0.5.0-1) unstable; urgency=low
+
+  * Fresh upstream release
+  * debian/rules
+    - assure having $HOME for clean and build operations to avoid crash of
+      matplotlib
+  * debian/control, debian/rules
+    - boost required ipython to 0.13.1 for building documentation
+    - add python-zmq explicitly to build-depends for correct IPython
+      operation
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Thu, 15 Aug 2013 23:45:31 -0400
+
+statsmodels (0.5.0~rc1-1) UNRELEASED; urgency=low
+
+  * New upstream snapshot from v0.4.3-1962-g13bbf88 at v0.4.3-1962-
+    g13bbf88
+    - depends on patsy
+  * debian/control
+    - requires ipython-notebook for building documentation
+      (Build-Depends adjusted)
+    - build for Python >= 2.7 due to absent python 2.6 build of pandas
+      for wheezy (debian/pyversions removed, use field X-Python-Version) now
+      instead
+    - boosted policy to 3.9.4 (no further changes)
+  * debian/copyright
+    - years adjusted
+  * debian/rules
+    - migrate to dh_python2 from dh_pysupport
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Thu, 01 Aug 2013 09:42:43 -0400
+
+statsmodels (0.4.2-1) unstable; urgency=low
+
+  * Fresh upstream release addressing FTBFS across big-endian architectures.
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 29 Jun 2012 17:26:36 -0400
+
+statsmodels (0.4.1-1) unstable; urgency=low
+
+  * Fresh upstream release
+    - dropped up_versioncomparison_with_rc
+    - require Python >= 2.6
+  * Do fail if unittests fail
+  * Added joblib to build-depends since seems could be used during tests
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Fri, 15 Jun 2012 17:57:17 -0400
+
+statsmodels (0.4.0-2) unstable; urgency=low
+
+  * Removed python-rpy from Recommends to avoid pulling Rtillery with
+    with the default installation of statsmodels and pandas, since rpy apparently
+    is mentioned only in some legacy code
+  * Added patch up_versioncomparison_with_rc to "cherry-pick" 45ee896 for
+    robust version comparison with rc versions of numpy/scipy
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Sun, 13 May 2012 20:40:37 -0400
+
+statsmodels (0.4.0-1) unstable; urgency=low
+
+  * Fresh upstream release
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 01 May 2012 09:34:58 -0400
+
+statsmodels (0.4.0~rc2+git6-g756f2d0-1) experimental; urgency=low
+
+  * Fresh upstream pre-release
+    - all patches dropped (upstreamed)
+    - scikits. name space is getting deprecated:
+      - python-scikits.statsmodels is provided to ease code transition
+      - python-statsmodels-doc replaces python-scikits.statsmodels-doc
+    - python-statsmodels-lib is introduced to carry arch-dependent
+      extensions
+  * debian/copyright:
+    - entry for statsmodels/stats/libqsturng
+  * debian/watch:
+    - use githubredir.debian.net
+  * debian/{rules,control}
+    - rule cythonize to (re-)cythonize .pyx files so they could be
+      built on older releases
+    - use custom IPython01x available from NeuroDebian on older releases
+      to build documentation
+    - build-depend on python-all-dev now to build extensions
+    - recommend python-joblib
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 11 Apr 2012 08:30:50 -0400
+
+statsmodels (0.3.1-4) unstable; urgency=low
+
+  * Added patch from Ubuntu: fix_test_discrete.patch.  Thanks Michael Terry for
+    the patch and Gregor Herrmann for the reminder (Closes: #663986, #648845)
+  * upon clean -- remove autogenerated version.py
+  * debian/copyright: adjusted for DEP-5
+  * debian/control: boosted policy to 3.9.3 (no changes)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Thu, 29 Mar 2012 12:44:27 -0400
+
+statsmodels (0.3.1-3) unstable; urgency=low
+
+  * Few bugfixes:
+    - up_broken_imports
+    - up_doc_fixes
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Sat, 21 Jan 2012 12:07:54 -0500
+
+statsmodels (0.3.1-2) unstable; urgency=low
+
+  * debian/copyright: extended list of copyrights/licenses. Thanks to
+    Luca Falavigna for the thorough review
+  * debian/rules: remove shipped COPYING files due to duplication of
+    debian/copyright
+  * Initial release -- upload to Debian (Closes: #570604)
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Thu, 25 Aug 2011 23:23:37 +0200
+
+statsmodels (0.3.1-1) UNRELEASED; urgency=low
+
+  * Added get-orig-source rule to fetch from github using uscan
+  * Upload to Debian was rejected
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Wed, 24 Aug 2011 23:14:01 +0200
+
+statsmodels (0.3.0-1) neurodebian; urgency=low
+
+  * Upstream release -- upload to Debian proper is pending the removal of
+    WFS dataset (research only restriction)
+  * debian/copyright: expanded to mention copyrights for the included
+    datasets, adjusted BSD-3 license text to use project's name instead
+    of "stock" regents.
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 19 Jul 2011 22:40:18 -0400
+
+statsmodels (0.3.0~rc2+4-gc78fbe1-1) UNRELEASED; urgency=low
+
+  * Upstream snapshot post RC2:
+    - upstream moved to GIT, Debian packaging repository reinitilized
+      borrowing debian/ branch from previous one (git-bzr imported)
+  * debian/control: boosted policy to 3.9.2 -- no changes
+  * debian/watch: fetch from github
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Thu, 07 Jul 2011 22:43:21 -0400
+
+statsmodels (0.3.0~bzr20110330-1) neurodebian; urgency=low
+
+  * Fresh snapshot of BZR 0.3-devel series
+  * Initial upload to Debian was rejected due to data licensing issues
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Tue, 29 Mar 2011 17:48:04 -0400
+
+statsmodels (0.2.0+bzr1990-1) neurodebian; urgency=low
+
+  * Initial release -- rejected due to full list of copyrights
+
+ -- Yaroslav Halchenko <debian@onerussian.com>  Thu, 06 May 2010 23:02:18 -0400

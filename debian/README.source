@@ -1,0 +1,11 @@
+This repository includes the upstream Git history.
+
+Setting up the second remote (once per clone):
+git remote add upstream https://github.com/statsmodels/statsmodels
+
+Importing a new upstream version:
+git fetch upstream
+gbp import-orig --upstream-branch=upstreamtarballs --uscan --pristine-tar "--upstream-vcs-tag=v%(version)s" --debian-branch=main
+
+Remember that the source package the buildds see isn't a Git repo:
+we (unlike upstream) can't use git as a clean command during the build. 

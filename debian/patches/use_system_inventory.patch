@@ -1,0 +1,23 @@
+Author: Diane Trout <diane@ghic.org>, Rebecca N. Palmer
+Description: Use intersphinx inventory files from other Debian packages.
+Forwarded: not-needed
+
+--- a/docs/source/conf.py
++++ b/docs/source/conf.py
+@@ -402,12 +402,12 @@ nbsphinx_execute = "never"
+ # Example configuration for intersphinx: refer to the Python standard library.
+ # Example configuration for intersphinx: refer to the Python standard library.
+ intersphinx_mapping = {
+-    'numpy': ('https://docs.scipy.org/doc/numpy/', None),
+-    'python': ('https://docs.python.org/3/', None),
++    'numpy': ('https://docs.scipy.org/doc/numpy/', None), # no longer has a -doc in Debian '/usr/share/doc/python-numpy-doc/html/objects.inv'),
++    'python': ('https://docs.python.org/3/', '/usr/share/doc/python3-doc/html/objects.inv'),
+     'pydagogue': ('https://matthew-brett.github.io/pydagogue/', None),
+     'matplotlib': ('https://matplotlib.org/', None),
+-    'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
+-    'pandas': ('https://pandas.pydata.org/pandas-docs/stable/', None),
++    'scipy': ('https://docs.scipy.org/doc/scipy/reference/', '/usr/share/doc/python-scipy-doc/html/objects.inv'),
++    'pandas': ('https://pandas.pydata.org/pandas-docs/stable/', '/usr/share/doc/python-pandas-doc/html/objects.inv'),
+ }
+ 
+ plot_basedir = join(dirname(dirname(os.path.abspath(__file__))), 'source')

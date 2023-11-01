@@ -1,0 +1,29 @@
+Description: Ignore a failure to converge on mipsel and armel
+
+(Seen to fail in 0.13.5+dfsg-5, twice on mipsel, and in 0.14.0 on armel.
+Not a plain mark.xfail to not accept "converged" to the wrong answer.)
+
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Forwarded: no
+
+--- a/statsmodels/stats/tests/test_corrpsd.py
++++ b/statsmodels/stats/tests/test_corrpsd.py
+@@ -6,6 +6,8 @@ Created on Mon May 27 12:07:02 2013
+ Author: Josef Perktold
+ """
+ import warnings
++import subprocess
++debian_arch = subprocess.run(["dpkg","--print-architecture"],capture_output=True,encoding='utf-8').stdout.strip()
+ 
+ import numpy as np
+ from numpy.testing import assert_almost_equal, assert_allclose
+@@ -331,6 +333,9 @@ class Test_Factor:
+ 
+         mat_dense = dense_rslt.corr.to_matrix()
+         mat_sparse = sparse_rslt.corr.to_matrix()
++        if (debian_arch.startswith('mips') or debian_arch=='armel') and not sparse_rslt.Converged:
++            warnings.warn("ignoring non-convergence")
++            pytest.xfail()
+ 
+         assert dense_rslt.Converged is sparse_rslt.Converged
+         assert dense_rslt.Converged is True

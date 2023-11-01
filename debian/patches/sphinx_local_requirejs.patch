@@ -1,0 +1,16 @@
+Description: Use local requirejs/mathjax
+
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Forwarded: not-needed
+
+--- a/docs/source/conf.py
++++ b/docs/source/conf.py
+@@ -67,6 +67,8 @@ else:
+ 
+ # nbsphinx options
+ nbsphinx_allow_errors = True
++nbsphinx_requirejs_path="require.min.js"
++mathjax_path="MathJax.js"
+ ipython_warning_is_error = False
+ # sphinxcontrib-spelling options
+ spelling_word_list_filename = ['spelling_wordlist.txt', 'names_wordlist.txt']

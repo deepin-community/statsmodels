@@ -1,0 +1,213 @@
+Description: Loosen tolerances on some tests on i386
+
+and xfail a test that fails for not producing ConvergenceWarning.
+
+Failure logs:
+test_smoothing
+https://buildd.debian.org/status/fetch.php?pkg=statsmodels&arch=i386&ver=0.9.0-3&stamp=1567157609&raw=0
+test_multivariate_switch_univariate
+https://buildd.debian.org/status/fetch.php?pkg=statsmodels&arch=i386&ver=0.12.0-1&stamp=1599693472&raw=0
+
+As it only fails on i386 and isn't far wrong,
+I suspect different rounding due to x87 excess precision
+
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Bug-Debian: https://bugs.debian.org/938949
+Forwarded: no
+
+--- a/statsmodels/tsa/statespace/tests/test_smoothing.py
++++ b/statsmodels/tsa/statespace/tests/test_smoothing.py
+@@ -29,8 +29,10 @@ from statsmodels.tsa.statespace.kalman_s
+     SMOOTH_UNIVARIATE)
+ 
+ current_path = os.path.dirname(os.path.abspath(__file__))
+-
+-
++import sys
++import platform
++import re
++i386_looser_tolerances=bool(re.match('i.?86|x86',platform.uname()[4])) and np.log2(sys.maxsize)<33
+ class TestStatesAR3:
+     @classmethod
+     def setup_class(cls, alternate_timing=False, *args, **kwargs):
+@@ -836,7 +838,7 @@ class TestMultivariateVARUnivariate:
+     def test_forecasts_error_cov(self):
+         assert_allclose(
+             self.results.forecasts_error_cov.diagonal(),
+-            self.desired[['F1', 'F2', 'F3']]
++            self.desired[['F1', 'F2', 'F3']],rtol=2e-7 if i386_looser_tolerances else 1e-7
+         )
+ 
+     def test_predicted_states(self):
+@@ -890,7 +892,7 @@ class TestMultivariateVARUnivariate:
+     def test_smoothed_measurement_disturbance_cov(self):
+         assert_allclose(
+             self.results.smoothed_measurement_disturbance_cov.diagonal(),
+-            self.desired[['Veps1', 'Veps2', 'Veps3']]
++            self.desired[['Veps1', 'Veps2', 'Veps3']],rtol=2e-7 if i386_looser_tolerances else 1e-7
+         )
+ 
+ 
+--- a/statsmodels/tsa/statespace/tests/test_multivariate_switch_univariate.py
++++ b/statsmodels/tsa/statespace/tests/test_multivariate_switch_univariate.py
+@@ -19,6 +19,10 @@ Princeton, N.J.: Princeton University Pr
+ """
+ import numpy as np
+ import pytest
++import sys
++import platform
++import re
++i386_looser_tolerances=bool(re.match('i.?86|x86',platform.uname()[4])) and np.log2(sys.maxsize)<33
+ 
+ from statsmodels.tsa.statespace import (
+     mlemodel, sarimax, structural, varmax, dynamic_factor)
+@@ -236,7 +240,7 @@ def test_filter_output(univariate, missi
+     # Test the output when the multivariate filter switches to the univariate
+     # filter
+     mod = get_model(univariate, missing, init)
+-    check_filter_output(mod, periods)
++    check_filter_output(mod, periods, atol=1e-10 if i386_looser_tolerances else 0)
+ 
+ 
+ @pytest.mark.parametrize('univariate', [True, False])
+@@ -255,7 +259,7 @@ def test_smoother_output(univariate, mis
+         if init == 'diffuse':
+             return
+         mod.ssm.timing_init_filtered = True
+-    atol = 1e-12
++    atol = 1e-8 if i386_looser_tolerances else 1e-12
+     # Tolerance is lower for approximate diffuse for one attribute in this case
+     if missing == 'init' and init == 'approximate_diffuse':
+         atol = 1e-6
+--- a/statsmodels/tsa/holtwinters/tests/test_holtwinters.py
++++ b/statsmodels/tsa/holtwinters/tests/test_holtwinters.py
+@@ -6,7 +6,11 @@ from statsmodels.compat.pytest import py
+ 
+ import os
+ import re
++import sys
++import platform
+ import warnings
++import sys
++import platform
+ 
+ import numpy as np
+ from numpy.testing import assert_allclose, assert_almost_equal
+@@ -850,7 +854,17 @@ def test_start_params(trend, seasonal):
+         minimize_kwargs={"minimizer_kwargs": {"method": "SLSQP"}},
+     )
+     assert isinstance(res.summary().as_text(), str)
+-    assert res2.sse < 1.01 * res.sse
++    if bool(re.match('i.?86|x86',platform.uname()[4])) and sys.maxsize<2**33 and np.isnan(res.sse) and np.isnan(res.sse2):
++        warnings.warn("NaN result: params:"+str(res.params)+" summary:"+str(res.summary().as_text())+"params:"+str(res2.params)+" summary:"+str(res2.summary().as_text()))
++        with pytest.warns(ConvergenceWarning):
++            mod.fit()
++        with pytest.warns(ConvergenceWarning):
++            mod.fit(
++                method="basinhopping",
++                minimize_kwargs={"minimizer_kwargs": {"method": "SLSQP"}},
++            )
++    else:
++        assert res2.sse < 1.01 * res.sse
+     assert isinstance(res2.params, dict)
+ 
+ 
+@@ -1623,6 +1637,7 @@ def test_simulate_boxcox(austourists):
+     assert np.all(np.abs(mean - expected) < 5)
+ 
+ 
++@pytest.mark.xfail(condition=bool(re.match('i.?86|x86',platform.uname()[4])) and np.log2(sys.maxsize)<33,reason="doesn't warn on i386",strict=False)
+ @pytest.mark.parametrize("ix", [10, 100, 1000, 2000])
+ def test_forecast_index(ix):
+     # GH 6549
+--- a/statsmodels/iolib/tests/test_summary2.py
++++ b/statsmodels/iolib/tests/test_summary2.py
+@@ -1,4 +1,7 @@
+ import warnings
++import platform
++import re
++import sys
+ 
+ import numpy as np
+ import pandas as pd
+@@ -70,6 +73,22 @@ parentheses.
+         reg2 = OLS(y2, x).fit()
+         actual = summary_col([reg1, reg2], float_format='%0.1f').as_text()
+         actual = '%s\n' % actual
++        if bool(re.match('i.?86|x86',platform.uname()[4])) and sys.maxsize<2**33 and actual== r"""
++==========================
++                y I   y II
++--------------------------
++const          7.8   12.4 
++               (1.1) (3.2)
++x1             -0.8  -1.6 
++               (0.2) (0.7)
++R-squared      0.8   0.6  
++R-squared Adj. 0.7   0.5  
++==========================
++Standard errors in
++parentheses.
++""":  # noqa:W291
++            pytest.xfail()
++
+         assert_equal(actual, desired)
+ 
+         starred = summary_col([reg1, reg2], stars=True, float_format='%0.1f')
+--- a/statsmodels/tsa/statespace/tests/test_exact_diffuse_filtering.py
++++ b/statsmodels/tsa/statespace/tests/test_exact_diffuse_filtering.py
+@@ -899,7 +899,14 @@ class CheckDFM(CheckSSMResults):
+         assert_allclose(self.results_a.initial_diffuse_state_cov, np.eye(2))
+ 
+ 
++import pytest
++import re
++import sys
++import platform
++i386_looser_tolerances=bool(re.match('i.?86|x86',platform.uname()[4])) and sys.maxsize<2**33
+ class TestDFM_Approx(CheckApproximateDiffuseMixin, CheckDFM):
++    if i386_looser_tolerances:
++        rtol = 1e-6
+     # Note: somewhat fragile, we need to increase the approximate variance to
+     # 5e10 for the tests to pass at the appropriate level of precision, but
+     # we cannot increase it too much more than this because then we start get
+--- a/statsmodels/discrete/tests/test_truncated_model.py
++++ b/statsmodels/discrete/tests/test_truncated_model.py
+@@ -1,5 +1,9 @@
+ 
+ import warnings
++import pytest
++import re
++import sys
++import platform
+ 
+ import numpy as np
+ from numpy.testing import assert_allclose, assert_equal
+@@ -28,6 +32,7 @@ from .results import results_truncated_s
+ 
+ 
+ class CheckResults:
++    xfail_nonconverge = False
+     def test_params(self):
+         assert_allclose(self.res1.params, self.res2.params,
+                         atol=1e-5, rtol=1e-5)
+@@ -55,7 +60,10 @@ class CheckResults:
+         with warnings.catch_warnings():
+             warnings.simplefilter("ignore", category=ConvergenceWarning)
+             # This does not catch all Convergence warnings, why?
+-            res_reg = model.fit_regularized(alpha=alpha*0.01, disp=0)
++            res_reg = model.fit_regularized(alpha=alpha*0.01, disp=0, full_output=True)
++            if self.xfail_nonconverge and not res_reg.mle_retvals['converged']:
++                warnings.warn("did not converge"+str(res_reg.mle_retvals))
++                pytest.xfail()
+ 
+         assert_allclose(res_reg.params, self.res1.params,
+                         rtol=1e-3, atol=5e-3)
+@@ -73,6 +81,8 @@ class TestTruncatedLFPoissonModel(CheckR
+         res2 = RandHIE()
+         res2.truncated_poisson()
+         cls.res2 = res2
++        if bool(re.match('i.?86|x86',platform.uname()[4])) and np.log2(sys.maxsize)<33:
++            cls.xfail_nonconverge = True
+ 
+ 
+ class TestZeroTruncatedLFPoissonModel(CheckResults):

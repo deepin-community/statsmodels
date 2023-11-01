@@ -1,0 +1,11 @@
+Name: statsmodels
+Repository: https://github.com/statsmodels/statsmodels
+Documentation: https://www.statsmodels.org/stable/
+Bug-Database: https://github.com/statsmodels/statsmodels/issues
+Contact: https://groups.google.com/group/pystatsmodels
+Reference:
+  Title: "Statsmodels: Econometric and statistical modeling with python"
+  Eprint: https://conference.scipy.org/proceedings/scipy2010/pdfs/seabold.pdf
+  Author: Seabold, Skipper and Perktold, Josef
+  Booktitle: 9th Python in Science Conference
+  Year: 2010

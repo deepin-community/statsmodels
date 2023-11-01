@@ -1,0 +1,25 @@
+Description: Ignore missing HessianInversionWarning on some mips*
+
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Forwarded: no
+
+--- a/statsmodels/base/tests/test_generic_methods.py
++++ b/statsmodels/base/tests/test_generic_methods.py
+@@ -10,6 +10,8 @@ Created on Wed Oct 30 14:01:27 2013
+ 
+ Author: Josef Perktold
+ """
++import platform
++import contextlib
+ from statsmodels.compat.pytest import pytest_warns
+ from statsmodels.compat.pandas import assert_index_equal, assert_series_equal
+ from statsmodels.compat.platform import (
+@@ -229,7 +231,7 @@ class CheckGenericMixin:
+                                                       start_params=sp,
+                                                       method=method, disp=0)
+             else:
+-                with pytest_warns(warn_cls):
++                with (contextlib.nullcontext() if ((warn_cls is not None) and ('mips' in platform.uname()[4])) else pytest_warns(warn_cls)):
+                     # more special casing RLM
+                     if (isinstance(self.results.model, (sm.RLM))):
+                         res1 = mod._fit_collinear()

@@ -1,0 +1,18 @@
+Description: Avoid cast exception in np.bincount
+
+Author: Rebecca N. Palmer <rebecca_palmer@zoho.com>
+Bug-Debian: https://bugs.debian.org/1030208
+Forwarded: no
+
+--- a/statsmodels/distributions/tests/test_discrete.py
++++ b/statsmodels/distributions/tests/test_discrete.py
+@@ -332,7 +332,8 @@ class CheckDiscretized():
+         dfr = mod.get_distr(res.params)
+         nobs_rvs = 500
+         rvs = dfr.rvs(size=nobs_rvs)
+-        freq = np.bincount(rvs)
++        assert (rvs == rvs.astype(int)).all()
++        freq = np.bincount(rvs.astype(int))#the cast is to avoid an unsafe-cast error on 32 bit systems, https://bugs.debian.org/1030208
+         p = mod.predict(res.params, which="probs", k_max=nobs_rvs)
+         k = len(freq)
+         p[k - 1] += 1 - p[:k].sum()

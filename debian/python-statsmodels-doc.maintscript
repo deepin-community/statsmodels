@@ -1,0 +1,2 @@
+symlink_to_dir /usr/share/doc/python-statsmodels-doc/html ../python-statsmodels/html 0.10.2-1~ python-statsmodels-doc
+symlink_to_dir /usr/share/doc/python-statsmodels-doc/examples ../python-statsmodels/examples 0.10.2-1~ python-statsmodels-doc
